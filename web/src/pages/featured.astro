@@ -1,0 +1,40 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import EmptyState from "../components/EmptyState.astro";
+import TemplateCard from "../components/TemplateCard.astro";
+import { getFeaturedEntries } from "../lib/catalog";
+
+const entries = getFeaturedEntries();
+---
+
+<BaseLayout
+  title="Featured"
+  description="Browse featured LaTeX templates and scaffolds from the static catalog."
+>
+  <section class="section">
+    <div class="container narrow">
+      <p class="eyebrow">Featured</p>
+      <h1>Highlighted catalog entries</h1>
+      <p class="lead">
+        Featured entries are flagged in repository metadata and rendered here automatically.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      {entries.length ? (
+        <div class="card-grid">
+          {entries.map((entry) => (
+            <TemplateCard entry={entry} />
+          ))}
+        </div>
+      ) : (
+        <EmptyState
+          title="No featured entries yet"
+          copy="Mark an entry as featured in its metadata to surface it here."
+        />
+      )}
+    </div>
+  </section>
+</BaseLayout>

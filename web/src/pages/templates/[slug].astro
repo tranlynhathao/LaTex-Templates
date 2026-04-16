@@ -1,0 +1,177 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Badge from "../../components/Badge.astro";
+import EmptyState from "../../components/EmptyState.astro";
+import PreviewTile from "../../components/PreviewTile.astro";
+import TemplateCard from "../../components/TemplateCard.astro";
+import { getEntries, getRelatedEntries } from "../../lib/catalog";
+import {
+  getRepositoryBlobUrl,
+  getRepositoryTreeUrl,
+  withBase,
+} from "../../lib/site";
+
+export function getStaticPaths() {
+  return getEntries().map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const relatedEntries = getRelatedEntries(entry);
+const previewDocumentUrl = entry.site_assets?.preview_document_url
+  ? withBase(entry.site_assets.preview_document_url)
+  : null;
+const downloadArchiveUrl = entry.site_assets?.download_archive_url
+  ? withBase(entry.site_assets.download_archive_url)
+  : null;
+const sourceDirectoryUrl = getRepositoryTreeUrl(entry.template_root);
+const metadataUrl = getRepositoryBlobUrl(entry.metadata_file);
+const readmeUrl = getRepositoryBlobUrl(entry.readme_file);
+---
+
+<BaseLayout title={entry.name} description={entry.description}>
+  <section class="section">
+    <div class="container detail-grid">
+      <div class="detail-main">
+        <p class="eyebrow">{entry.category_data?.name || entry.category}</p>
+        <h1>{entry.name}</h1>
+        <p class="lead">{entry.description}</p>
+        <div class="badge-row">
+          <Badge text={entry.catalog.kind_label} tone={entry.kind === "scaffold" ? "accent" : "success"} />
+          <Badge text={entry.catalog.maturity_label} tone="subtle" />
+          <Badge text={entry.catalog.compilation_label} tone="outline" />
+          <Badge text={entry.engine} tone="outline" />
+        </div>
+
+        <div class="detail-actions">
+          {previewDocumentUrl ? (
+            <a class="button button-primary" href={previewDocumentUrl} target="_blank" rel="noreferrer">
+              Open preview PDF
+            </a>
+          ) : (
+            <span class="button button-disabled">Preview PDF not available</span>
+          )}
+          {downloadArchiveUrl ? (
+            <a class="button button-secondary" href={downloadArchiveUrl}>
+              Download archive
+            </a>
+          ) : (
+            <span class="button button-disabled">Download archive not prepared</span>
+          )}
+        </div>
+
+        <dl class="detail-facts">
+          <div>
+            <dt>Category</dt>
+            <dd>{entry.category_data?.name || entry.category}</dd>
+          </div>
+          <div>
+            <dt>Intended use</dt>
+            <dd>{entry.intended_use}</dd>
+          </div>
+          <div>
+            <dt>Main file</dt>
+            <dd>{entry.main_file}</dd>
+          </div>
+          <div>
+            <dt>Language</dt>
+            <dd>{entry.language}</dd>
+          </div>
+          <div>
+            <dt>Version</dt>
+            <dd>{entry.version}</dd>
+          </div>
+          <div>
+            <dt>License</dt>
+            <dd>{entry.license}</dd>
+          </div>
+        </dl>
+
+        <section class="detail-section">
+          <h2>Dependencies</h2>
+          <div class="badge-row">
+            {entry.dependencies.map((dependency) => (
+              <Badge text={dependency} tone="outline" />
+            ))}
+          </div>
+        </section>
+
+        <section class="detail-section">
+          <h2>Catalog notes</h2>
+          <ul class="detail-list">
+            {entry.notes.map((note) => (
+              <li>{note}</li>
+            ))}
+          </ul>
+        </section>
+
+        <section class="detail-section">
+          <h2>Repository sources</h2>
+          <ul class="detail-list">
+            <li>
+              Source location:
+              {sourceDirectoryUrl ? (
+                <a href={sourceDirectoryUrl} target="_blank" rel="noreferrer">
+                  {entry.template_root}
+                </a>
+              ) : (
+                <code>{entry.template_root}</code>
+              )}
+            </li>
+            <li>
+              Metadata:
+              {metadataUrl ? (
+                <a href={metadataUrl} target="_blank" rel="noreferrer">
+                  {entry.metadata_file}
+                </a>
+              ) : (
+                <code>{entry.metadata_file}</code>
+              )}
+            </li>
+            <li>
+              README:
+              {readmeUrl ? (
+                <a href={readmeUrl} target="_blank" rel="noreferrer">
+                  {entry.readme_file}
+                </a>
+              ) : (
+                <code>{entry.readme_file}</code>
+              )}
+            </li>
+          </ul>
+        </section>
+      </div>
+
+      <aside class="detail-sidebar">
+        <PreviewTile entry={entry} size="hero" />
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      {relatedEntries.length ? (
+        <>
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Related</p>
+              <h2>Related entries</h2>
+            </div>
+          </div>
+          <div class="card-grid">
+            {relatedEntries.map((relatedEntry) => (
+              <TemplateCard entry={relatedEntry} />
+            ))}
+          </div>
+        </>
+      ) : (
+        <EmptyState
+          title="No related entries yet"
+          copy="Related suggestions will appear here as the catalog grows within the same category or family."
+        />
+      )}
+    </div>
+  </section>
+</BaseLayout>

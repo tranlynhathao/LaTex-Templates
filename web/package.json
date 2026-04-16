@@ -1,0 +1,15 @@
+{
+  "name": "latex-template-gallery",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "refresh-data": "python3 ../scripts/build_registry.py && node ./scripts/sync-registry.mjs",
+    "dev": "npm run refresh-data && astro dev",
+    "build": "npm run refresh-data && astro build",
+    "preview": "astro preview"
+  },
+  "devDependencies": {
+    "astro": "6.1.7"
+  }
+}

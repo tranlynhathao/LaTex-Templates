@@ -1,0 +1,5 @@
+---
+const { text, tone = "subtle" } = Astro.props;
+---
+
+<span class:list={["badge", `badge-${tone}`]}>{text}</span>

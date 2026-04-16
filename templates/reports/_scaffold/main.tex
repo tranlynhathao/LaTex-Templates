@@ -1,0 +1,27 @@
+\documentclass[11pt,a4paper]{report}
+
+\input{styles/preamble}
+\input{styles/macros}
+
+\begin{document}
+
+\input{frontmatter/title-page}
+
+\pagenumbering{roman}
+\input{frontmatter/abstract}
+\tableofcontents
+\clearpage
+
+\pagenumbering{arabic}
+\input{sections/introduction}
+\input{sections/methodology}
+\input{sections/results}
+
+% For longer works, replace or supplement section-level files with:
+% \include{chapters/chapter-01}
+
+\input{backmatter/conclusion}
+\bibliographystyle{plainnat}
+\bibliography{bibliography/references}
+
+\end{document}

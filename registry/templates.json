@@ -1,0 +1,182 @@
+{
+  "generated_at": "2026-04-16T08:40:08+00:00",
+  "source": "scripts/build_registry.py",
+  "template_count": 2,
+  "real_template_count": 1,
+  "scaffold_count": 1,
+  "templates": [
+    {
+      "id": "slides-ldv-beamer",
+      "name": "LDV Beamer",
+      "slug": "ldv-beamer",
+      "kind": "real-template",
+      "maturity": "production",
+      "category": "slides",
+      "subcategory": "beamer",
+      "family": "presentation",
+      "description": "Existing Beamer presentation template package preserved as-is and integrated into the template platform architecture.",
+      "tags": [
+        "slides",
+        "beamer",
+        "presentation",
+        "academic"
+      ],
+      "author": "Repository owner",
+      "version": "1.0.0",
+      "engine": "lualatex",
+      "main_file": "example.tex",
+      "preview_image": null,
+      "preview_document": "example.pdf",
+      "preview_ready": false,
+      "compilation_status": "not-checked",
+      "listing_visibility": "public",
+      "status": "available",
+      "featured": true,
+      "sort_order": 100,
+      "created_at": "2026-04-16",
+      "updated_at": "2026-04-16",
+      "dependencies": [
+        "latexmk",
+        "beamer",
+        "fontspec",
+        "luatexja"
+      ],
+      "license": "unspecified",
+      "language": "vi",
+      "intended_use": "slide deck",
+      "notes": [
+        "Template package contents are preserved rather than restyled.",
+        "Legacy helper file readme.txt remains part of the package.",
+        "The platform layer treats this as a real preserved template package rather than a scaffold."
+      ],
+      "template_root": "templates/slides/ldv-beamer",
+      "metadata_file": "templates/slides/ldv-beamer/metadata.json",
+      "readme_file": "templates/slides/ldv-beamer/README.md",
+      "resolved_paths": {
+        "main_file": "templates/slides/ldv-beamer/example.tex",
+        "preview_image": null,
+        "preview_document": "templates/slides/ldv-beamer/example.pdf"
+      },
+      "catalog": {
+        "kind_label": "Real Template",
+        "maturity_label": "Production Ready",
+        "compilation_label": "Compile Not Checked",
+        "has_preview_image": false,
+        "has_preview_document": true,
+        "preview_status": "missing",
+        "badges": [
+          "Real Template",
+          "Production Ready",
+          "Compile Not Checked",
+          "Featured"
+        ],
+        "detail_route": "/templates/ldv-beamer",
+        "category_route": "/categories/slides",
+        "filters": {
+          "category": "slides",
+          "engine": "lualatex",
+          "kind": "real-template",
+          "maturity": "production",
+          "featured": true,
+          "preview_ready": false,
+          "compilation_status": "not-checked",
+          "family": "presentation"
+        },
+        "search_text": "ldv beamer existing beamer presentation template package preserved as-is and integrated into the template platform architecture. slides beamer presentation lualatex slides beamer presentation academic",
+        "sort": {
+          "category_order": 100,
+          "entry_order": 100,
+          "featured_rank": 0,
+          "name": "LDV Beamer"
+        }
+      }
+    },
+    {
+      "id": "reports-family-scaffold",
+      "name": "Report Family Scaffold",
+      "slug": "report-family-scaffold",
+      "kind": "scaffold",
+      "maturity": "reference",
+      "category": "reports",
+      "subcategory": "report-family",
+      "family": "report-family",
+      "description": "Reusable long-form document scaffold for future reports, articles, books, theses, dissertations, and lecture notes.",
+      "tags": [
+        "reports",
+        "scaffold",
+        "article",
+        "book",
+        "thesis",
+        "lecture-notes"
+      ],
+      "author": "Repository maintainer",
+      "version": "0.1.0",
+      "engine": "pdflatex",
+      "main_file": "main.tex",
+      "preview_image": null,
+      "preview_document": null,
+      "preview_ready": false,
+      "compilation_status": "verified",
+      "listing_visibility": "public",
+      "status": "available",
+      "featured": false,
+      "sort_order": 200,
+      "created_at": "2026-04-16",
+      "updated_at": "2026-04-16",
+      "dependencies": [
+        "latexmk",
+        "pdflatex",
+        "bibtex",
+        "natbib"
+      ],
+      "license": "unspecified",
+      "language": "en",
+      "intended_use": "generic report-family documents",
+      "notes": [
+        "Reference architecture only; not presented as a finished visual template.",
+        "Intended to be copied or specialized into future long-form template packages.",
+        "This entry is a scaffold and should not be presented as a finished report template."
+      ],
+      "template_root": "templates/reports/_scaffold",
+      "metadata_file": "templates/reports/_scaffold/metadata.json",
+      "readme_file": "templates/reports/_scaffold/README.md",
+      "resolved_paths": {
+        "main_file": "templates/reports/_scaffold/main.tex",
+        "preview_image": null,
+        "preview_document": null
+      },
+      "catalog": {
+        "kind_label": "Scaffold",
+        "maturity_label": "Reference Scaffold",
+        "compilation_label": "Compile Verified",
+        "has_preview_image": false,
+        "has_preview_document": false,
+        "preview_status": "missing",
+        "badges": [
+          "Scaffold",
+          "Reference Scaffold",
+          "Compile Verified"
+        ],
+        "detail_route": "/templates/report-family-scaffold",
+        "category_route": "/categories/reports",
+        "filters": {
+          "category": "reports",
+          "engine": "pdflatex",
+          "kind": "scaffold",
+          "maturity": "reference",
+          "featured": false,
+          "preview_ready": false,
+          "compilation_status": "verified",
+          "family": "report-family"
+        },
+        "search_text": "report family scaffold reusable long-form document scaffold for future reports, articles, books, theses, dissertations, and lecture notes. reports report-family report-family pdflatex reports scaffold article book thesis lecture-notes",
+        "sort": {
+          "category_order": 200,
+          "entry_order": 200,
+          "featured_rank": 1,
+          "name": "Report Family Scaffold"
+        }
+      }
+    }
+  ]
+}
