@@ -1,0 +1,50 @@
+# OS files
+.DS_Store
+
+# Common LaTeX build directories
+**/build/
+**/.cache/
+**/.home/
+
+# Core LaTeX artifacts
+*.aux
+*.auxlock
+*.bbl
+*.bcf
+*.blg
+*.dvi
+*.fdb_latexmk
+*.fls
+*.fmt
+*.ilg
+*.ind
+*.lof
+*.log
+*.lot
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.synctex.gz(busy)
+*.toc
+*.vrb
+*.xdv
+
+# Glossaries / indexes
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.ist
+
+# Miscellaneous temporary files
+*.backup
+*.bak
+*.lb
+*.lol
+*.tdo
+*.tmp
+*.xref

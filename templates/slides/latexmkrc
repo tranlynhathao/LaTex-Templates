@@ -1,0 +1,16 @@
+use strict;
+use warnings;
+use Cwd qw(getcwd);
+
+my $cwd = getcwd();
+
+for my $dir ("$cwd/.home", "$cwd/.cache") {
+    mkdir $dir unless -d $dir;
+}
+
+$ENV{'HOME'} = "$cwd/.home";
+$ENV{'XDG_CACHE_HOME'} = "$cwd/.cache";
+$ENV{'TEXINPUTS'} = "./ldvtheme//:./bibtex//:" . ($ENV{'TEXINPUTS'} // '');
+
+# Default to LuaLaTeX so the project works with fontspec/luatexja.
+$pdf_mode = 4;
