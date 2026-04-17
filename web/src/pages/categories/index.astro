@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CategoryCard from "../../components/CategoryCard.astro";
+import { getCategories } from "../../lib/catalog";
+
+const categories = getCategories();
+---
+
+<BaseLayout
+  title="Categories"
+  description="Browse the category structure for the LaTeX template platform."
+>
+  <section class="section">
+    <div class="container narrow">
+      <p class="eyebrow">Categories</p>
+      <h1>Catalog taxonomy</h1>
+      <p class="lead">
+        Categories reflect the repository roadmap. Some contain real templates, some are scaffold
+        backed, and many remain explicit placeholders for future work.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container card-grid category-grid">
+      {categories.map((category) => (
+        <CategoryCard category={category} />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

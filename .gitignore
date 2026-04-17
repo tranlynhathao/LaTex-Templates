@@ -48,3 +48,16 @@
 *.tdo
 *.tmp
 *.xref
+
+# Python tooling
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Web tooling
+node_modules/
+.next/
+.astro/
+dist/
+web/src/generated/
+web/public/site-assets/

@@ -1,0 +1,47 @@
+{
+  "id": "reports-family-scaffold",
+  "name": "Report Family Scaffold",
+  "slug": "report-family-scaffold",
+  "kind": "scaffold",
+  "maturity": "reference",
+  "category": "reports",
+  "subcategory": "report-family",
+  "family": "report-family",
+  "description": "Reusable long-form document scaffold for future reports, articles, books, theses, dissertations, and lecture notes.",
+  "tags": [
+    "reports",
+    "scaffold",
+    "article",
+    "book",
+    "thesis",
+    "lecture-notes"
+  ],
+  "author": "Repository maintainer",
+  "version": "0.1.0",
+  "engine": "pdflatex",
+  "main_file": "main.tex",
+  "preview_image": null,
+  "preview_document": null,
+  "preview_ready": false,
+  "compilation_status": "verified",
+  "listing_visibility": "public",
+  "status": "available",
+  "featured": false,
+  "sort_order": 200,
+  "created_at": "2026-04-16",
+  "updated_at": "2026-04-16",
+  "dependencies": [
+    "latexmk",
+    "pdflatex",
+    "bibtex",
+    "natbib"
+  ],
+  "license": "unspecified",
+  "language": "en",
+  "intended_use": "generic report-family documents",
+  "notes": [
+    "Reference architecture only; not presented as a finished visual template.",
+    "Intended to be copied or specialized into future long-form template packages.",
+    "This entry is a scaffold and should not be presented as a finished report template."
+  ]
+}

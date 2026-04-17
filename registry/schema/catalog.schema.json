@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/latex-template-platform/catalog.schema.json",
+  "title": "Generated Catalog Feed",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "generated_at",
+    "source",
+    "summary",
+    "categories",
+    "entries",
+    "featured_entries",
+    "filter_options",
+    "routes"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "object"
+    },
+    "categories": {
+      "type": "array"
+    },
+    "entries": {
+      "type": "array"
+    },
+    "featured_entries": {
+      "type": "array"
+    },
+    "filter_options": {
+      "type": "object"
+    },
+    "routes": {
+      "type": "object"
+    }
+  }
+}

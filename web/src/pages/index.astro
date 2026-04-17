@@ -1,0 +1,76 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Badge from "../components/Badge.astro";
+import CategoryCard from "../components/CategoryCard.astro";
+import StatCard from "../components/StatCard.astro";
+import TemplateCard from "../components/TemplateCard.astro";
+import { getCategories, getFeaturedEntries, getSiteData } from "../lib/catalog";
+import { withBase } from "../lib/site";
+
+const siteData = getSiteData();
+const featuredEntries = getFeaturedEntries();
+const categories = getCategories();
+---
+
+<BaseLayout
+  title="Home"
+  description="Static showcase for curated LaTeX templates, scaffolds, and future document families."
+>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <p class="eyebrow">Static Template Gallery</p>
+        <h1>Metadata-driven showcase for LaTeX templates and reusable scaffolds.</h1>
+        <p class="hero-copy">
+          This site is built from the repository registry, not from hand-written cards. Real
+          templates, scaffolds, and empty future categories are shown honestly so the catalog can
+          grow without pretending it is already complete.
+        </p>
+        <div class="button-row">
+          <a class="button button-primary" href={withBase("/templates")}>Browse templates</a>
+          <a class="button button-secondary" href={withBase("/categories")}>View categories</a>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <Badge text="GitHub Pages Ready" tone="success" />
+        <p class="hero-panel-title">Current platform snapshot</p>
+        <div class="stats-grid">
+          <StatCard value={siteData.summary.entry_count} label="Catalog entries" />
+          <StatCard value={siteData.summary.real_template_count} label="Real templates" />
+          <StatCard value={siteData.summary.scaffold_count} label="Scaffolds" />
+          <StatCard value={siteData.summary.category_count} label="Visible categories" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container section-header">
+      <div>
+        <p class="eyebrow">Featured</p>
+        <h2>Highlighted entries</h2>
+      </div>
+      <a class="text-link" href={withBase("/featured")}>Open featured page</a>
+    </div>
+    <div class="container card-grid">
+      {featuredEntries.map((entry) => (
+        <TemplateCard entry={entry} />
+      ))}
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container section-header">
+      <div>
+        <p class="eyebrow">Categories</p>
+        <h2>Structured for growth</h2>
+      </div>
+      <a class="text-link" href={withBase("/categories")}>Browse all categories</a>
+    </div>
+    <div class="container card-grid category-grid">
+      {categories.map((category) => (
+        <CategoryCard category={category} />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

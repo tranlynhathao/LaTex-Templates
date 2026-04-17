@@ -1,0 +1,219 @@
+{
+  "categories": [
+    {
+      "id": "slides",
+      "slug": "slides",
+      "name": "Slides",
+      "description": "Presentation and slide deck templates.",
+      "category_state": "real-templates-present",
+      "listing_visibility": "public",
+      "sort_order": 100,
+      "shared_family": "presentation",
+      "bootstrap_source": null,
+      "notes": [
+        "This category currently contains at least one real template package."
+      ]
+    },
+    {
+      "id": "reports",
+      "slug": "reports",
+      "name": "Reports",
+      "description": "Report-style templates and the report-family scaffold.",
+      "category_state": "scaffold-backed",
+      "listing_visibility": "public",
+      "sort_order": 200,
+      "shared_family": "report-family",
+      "bootstrap_source": "templates/reports/_scaffold",
+      "notes": [
+        "The category is intentionally scaffold-backed and does not yet contain a real report template."
+      ]
+    },
+    {
+      "id": "articles",
+      "slug": "articles",
+      "name": "Articles",
+      "description": "Article templates.",
+      "category_state": "empty-placeholder",
+      "listing_visibility": "public",
+      "sort_order": 300,
+      "shared_family": "report-family",
+      "bootstrap_source": "templates/reports/_scaffold",
+      "notes": [
+        "This is an empty future category placeholder.",
+        "Future article templates are expected to bootstrap from the report-family scaffold."
+      ]
+    },
+    {
+      "id": "books",
+      "slug": "books",
+      "name": "Books",
+      "description": "Book-length templates.",
+      "category_state": "empty-placeholder",
+      "listing_visibility": "public",
+      "sort_order": 400,
+      "shared_family": "report-family",
+      "bootstrap_source": "templates/reports/_scaffold",
+      "notes": [
+        "This is an empty future category placeholder.",
+        "Future book templates are expected to bootstrap from the report-family scaffold."
+      ]
+    },
+    {
+      "id": "theses",
+      "slug": "theses",
+      "name": "Theses",
+      "description": "Thesis templates.",
+      "category_state": "empty-placeholder",
+      "listing_visibility": "public",
+      "sort_order": 500,
+      "shared_family": "report-family",
+      "bootstrap_source": "templates/reports/_scaffold",
+      "notes": [
+        "This is an empty future category placeholder.",
+        "Future thesis templates are expected to bootstrap from the report-family scaffold."
+      ]
+    },
+    {
+      "id": "dissertations",
+      "slug": "dissertations",
+      "name": "Dissertations",
+      "description": "Dissertation templates.",
+      "category_state": "empty-placeholder",
+      "listing_visibility": "public",
+      "sort_order": 600,
+      "shared_family": "report-family",
+      "bootstrap_source": "templates/reports/_scaffold",
+      "notes": [
+        "This is an empty future category placeholder.",
+        "Future dissertation templates are expected to bootstrap from the report-family scaffold."
+      ]
+    },
+    {
+      "id": "cv",
+      "slug": "cv",
+      "name": "CV",
+      "description": "Curriculum vitae templates.",
+      "category_state": "empty-placeholder",
+      "listing_visibility": "public",
+      "sort_order": 700,
+      "shared_family": null,
+      "bootstrap_source": null,
+      "notes": [
+        "This is an empty future category placeholder."
+      ]
+    },
+    {
+      "id": "resumes",
+      "slug": "resumes",
+      "name": "Resumes",
+      "description": "Resume templates.",
+      "category_state": "empty-placeholder",
+      "listing_visibility": "public",
+      "sort_order": 800,
+      "shared_family": null,
+      "bootstrap_source": null,
+      "notes": [
+        "This is an empty future category placeholder."
+      ]
+    },
+    {
+      "id": "letters",
+      "slug": "letters",
+      "name": "Letters",
+      "description": "Letter and correspondence templates.",
+      "category_state": "empty-placeholder",
+      "listing_visibility": "public",
+      "sort_order": 900,
+      "shared_family": null,
+      "bootstrap_source": null,
+      "notes": [
+        "This is an empty future category placeholder."
+      ]
+    },
+    {
+      "id": "posters",
+      "slug": "posters",
+      "name": "Posters",
+      "description": "Poster templates.",
+      "category_state": "empty-placeholder",
+      "listing_visibility": "public",
+      "sort_order": 1000,
+      "shared_family": null,
+      "bootstrap_source": null,
+      "notes": [
+        "This is an empty future category placeholder."
+      ]
+    },
+    {
+      "id": "handouts",
+      "slug": "handouts",
+      "name": "Handouts",
+      "description": "Handout templates.",
+      "category_state": "empty-placeholder",
+      "listing_visibility": "public",
+      "sort_order": 1100,
+      "shared_family": null,
+      "bootstrap_source": null,
+      "notes": [
+        "This is an empty future category placeholder."
+      ]
+    },
+    {
+      "id": "lecture-notes",
+      "slug": "lecture-notes",
+      "name": "Lecture Notes",
+      "description": "Lecture note templates.",
+      "category_state": "empty-placeholder",
+      "listing_visibility": "public",
+      "sort_order": 1200,
+      "shared_family": "report-family",
+      "bootstrap_source": "templates/reports/_scaffold",
+      "notes": [
+        "This is an empty future category placeholder.",
+        "Future lecture-note templates are expected to bootstrap from the report-family scaffold."
+      ]
+    },
+    {
+      "id": "assignments",
+      "slug": "assignments",
+      "name": "Assignments",
+      "description": "Assignment templates.",
+      "category_state": "empty-placeholder",
+      "listing_visibility": "public",
+      "sort_order": 1300,
+      "shared_family": null,
+      "bootstrap_source": null,
+      "notes": [
+        "This is an empty future category placeholder."
+      ]
+    },
+    {
+      "id": "journals",
+      "slug": "journals",
+      "name": "Journals",
+      "description": "Journal-specific templates.",
+      "category_state": "empty-placeholder",
+      "listing_visibility": "public",
+      "sort_order": 1400,
+      "shared_family": null,
+      "bootstrap_source": null,
+      "notes": [
+        "This is an empty future category placeholder."
+      ]
+    },
+    {
+      "id": "misc",
+      "slug": "misc",
+      "name": "Miscellaneous",
+      "description": "Templates that do not fit a dedicated category.",
+      "category_state": "empty-placeholder",
+      "listing_visibility": "public",
+      "sort_order": 1500,
+      "shared_family": null,
+      "bootstrap_source": null,
+      "notes": [
+        "This is an empty future category placeholder."
+      ]
+    }
+  ]
+}

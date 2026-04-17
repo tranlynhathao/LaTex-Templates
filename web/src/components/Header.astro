@@ -1,0 +1,26 @@
+---
+import { SITE_NAME, withBase } from "../lib/site";
+
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/templates", label: "Templates" },
+  { href: "/categories", label: "Categories" },
+  { href: "/featured", label: "Featured" },
+  { href: "/search", label: "Search" },
+];
+---
+
+<header class="site-header">
+  <div class="container site-header-inner">
+    <a class="site-brand" href={withBase("/")}>{SITE_NAME}</a>
+    <nav aria-label="Primary">
+      <ul class="site-nav">
+        {links.map((link) => (
+          <li>
+            <a href={withBase(link.href)}>{link.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>

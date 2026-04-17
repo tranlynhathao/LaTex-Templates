@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/latex-template-platform/template.schema.json",
+  "title": "Template Metadata",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "id",
+    "name",
+    "slug",
+    "kind",
+    "maturity",
+    "category",
+    "subcategory",
+    "family",
+    "description",
+    "tags",
+    "author",
+    "version",
+    "engine",
+    "main_file",
+    "preview_image",
+    "preview_document",
+    "preview_ready",
+    "compilation_status",
+    "listing_visibility",
+    "status",
+    "featured",
+    "sort_order",
+    "created_at",
+    "updated_at",
+    "dependencies",
+    "license",
+    "language",
+    "intended_use",
+    "notes"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "real-template",
+        "scaffold"
+      ]
+    },
+    "maturity": {
+      "type": "string",
+      "enum": [
+        "production",
+        "reference",
+        "experimental",
+        "archived"
+      ]
+    },
+    "category": {
+      "type": "string"
+    },
+    "subcategory": {
+      "type": "string"
+    },
+    "family": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "author": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "engine": {
+      "type": "string"
+    },
+    "main_file": {
+      "type": "string"
+    },
+    "preview_image": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "preview_document": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "preview_ready": {
+      "type": "boolean"
+    },
+    "compilation_status": {
+      "type": "string",
+      "enum": [
+        "verified",
+        "not-checked",
+        "failing"
+      ]
+    },
+    "listing_visibility": {
+      "type": "string",
+      "enum": [
+        "public",
+        "hidden"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "available",
+        "draft",
+        "deprecated",
+        "archived"
+      ]
+    },
+    "featured": {
+      "type": "boolean"
+    },
+    "sort_order": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "license": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string"
+    },
+    "intended_use": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

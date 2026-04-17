@@ -1,0 +1,19 @@
+---
+import { SITE_NAME, withBase } from "../lib/site";
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <p class="footer-title">{SITE_NAME}</p>
+      <p class="footer-copy">
+        Static, metadata-driven gallery for reusable LaTeX templates and scaffolds.
+      </p>
+    </div>
+    <div class="footer-links">
+      <a href={withBase("/templates")}>Browse Templates</a>
+      <a href={withBase("/categories")}>View Categories</a>
+      <a href={withBase("/featured")}>Featured Entries</a>
+    </div>
+  </div>
+</footer>

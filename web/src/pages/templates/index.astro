@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CatalogBrowser from "../../components/CatalogBrowser.astro";
+import { getEntries, getFilterOptions } from "../../lib/catalog";
+
+const entries = getEntries();
+const filterOptions = getFilterOptions();
+---
+
+<BaseLayout
+  title="Templates"
+  description="Browse all catalog entries across templates and scaffolds."
+>
+  <section class="section">
+    <div class="container narrow">
+      <p class="eyebrow">Templates</p>
+      <h1>Catalog listing</h1>
+      <p class="lead">
+        This listing is generated from registry data. Real templates and scaffolds are both shown,
+        but clearly labeled so the gallery does not overstate what is already production-ready.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <CatalogBrowser
+        entries={entries}
+        filterOptions={filterOptions}
+        title="Filter the catalog"
+        copy="Search by name, description, tags, engine, or entry type."
+      />
+    </div>
+  </section>
+</BaseLayout>

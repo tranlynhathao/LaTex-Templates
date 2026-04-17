@@ -1,0 +1,27 @@
+---
+import Badge from "./Badge.astro";
+import { withBase } from "../lib/site";
+
+const { entry, size = "card" } = Astro.props;
+const previewImageUrl = entry.site_assets?.preview_image_url
+  ? withBase(entry.site_assets.preview_image_url)
+  : null;
+const placeholderTitle =
+  entry.kind === "scaffold" ? "Scaffold preview pending" : "Preview image unavailable";
+const placeholderCopy =
+  entry.site_assets?.preview_document_url
+    ? "A preview document is available even though no thumbnail has been registered yet."
+    : "This catalog entry is visible without a thumbnail so the listing stays honest about available assets.";
+---
+
+<div class:list={["preview-tile", `preview-${size}`]}>
+  {previewImageUrl ? (
+    <img src={previewImageUrl} alt={`Preview for ${entry.name}`} loading="lazy" />
+  ) : (
+    <div class="preview-placeholder">
+      <Badge text={entry.kind === "scaffold" ? "Scaffold" : "Template"} tone="accent" />
+      <p class="preview-placeholder-title">{placeholderTitle}</p>
+      <p class="preview-placeholder-copy">{placeholderCopy}</p>
+    </div>
+  )}
+</div>

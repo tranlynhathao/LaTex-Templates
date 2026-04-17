@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CatalogBrowser from "../components/CatalogBrowser.astro";
+import { getEntries, getFilterOptions } from "../lib/catalog";
+
+const entries = getEntries();
+const filterOptions = getFilterOptions();
+---
+
+<BaseLayout
+  title="Search"
+  description="Search the static template catalog by metadata, tags, engine, or category."
+>
+  <section class="section">
+    <div class="container narrow">
+      <p class="eyebrow">Search</p>
+      <h1>Search the catalog</h1>
+      <p class="lead">
+        The search surface is static-first. It filters pre-rendered entries using registry-derived
+        metadata, which keeps the site deployable on GitHub Pages without a backend.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <CatalogBrowser
+        entries={entries}
+        filterOptions={filterOptions}
+        title="Search and refine"
+        copy="Use the controls below to narrow by category, engine, kind, or featured status."
+        autofocus={true}
+      />
+    </div>
+  </section>
+</BaseLayout>

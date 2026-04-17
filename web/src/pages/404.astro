@@ -1,0 +1,20 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../lib/site";
+---
+
+<BaseLayout
+  title="Not Found"
+  description="The requested catalog page could not be found."
+>
+  <section class="section">
+    <div class="container narrow">
+      <p class="eyebrow">404</p>
+      <h1>Page not found</h1>
+      <p class="lead">
+        This route does not map to a generated catalog page. Browse from the main listing instead.
+      </p>
+      <a class="button button-primary" href={withBase("/templates")}>Back to templates</a>
+    </div>
+  </section>
+</BaseLayout>
