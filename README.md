@@ -16,14 +16,14 @@ The repository uses three explicit platform states:
 
 The repository currently contains:
 
-- one preserved real slide template under `templates/slides/ldv-beamer/`
-- one reusable report-family scaffold under `templates/reports/_scaffold/`
+- one preserved real slide template under [`templates/slides/ldv-beamer/`](./templates/slides/ldv-beamer/)
+- one reusable report-family scaffold under [`templates/reports/_scaffold/`](./templates/reports/_scaffold/)
 - explicit empty category placeholders for future growth
 
 | ID | Kind | Maturity | Category | Engine | Preview | Compile Status | Path |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| slides-ldv-beamer | Real template | Production | slides | lualatex | No thumbnail yet | Not checked in this platform pass | `templates/slides/ldv-beamer/` |
-| reports-family-scaffold | Scaffold | Reference | reports | pdflatex | No thumbnail yet | Verified | `templates/reports/_scaffold/` |
+| `slides-ldv-beamer` | Real template | Production | `slides` | `lualatex` | No thumbnail yet | Not checked in this platform pass | `templates/slides/ldv-beamer/` |
+| `reports-family-scaffold` | Scaffold | Reference | `reports` | `pdflatex` | No thumbnail yet | Verified | `templates/reports/_scaffold/` |
 
 ## Platform Architecture
 
