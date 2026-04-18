@@ -18,23 +18,28 @@ const entries = getEntriesByCategory(category.id);
 const bootstrapEntry = getBootstrapEntry(category);
 const entryCount = category.entry_counts?.total || 0;
 const entryCountLabel = `${entryCount} ${entryCount === 1 ? "entry" : "entries"}`;
+const stateLabel = getCategoryStateLabel(category.category_state);
+const stateTone = getCategoryStateTone(category.category_state);
+const isEmpty = category.category_state === "empty-placeholder";
 ---
 
 <BaseLayout title={category.name} description={category.description}>
-  <section class="section">
-    <div class="container narrow">
+  <section class="detail-hero" style="padding-top:3.5rem;">
+    <div class="container">
+      <nav class="detail-breadcrumbs" aria-label="Breadcrumb">
+        <a href={withBase("/categories")}>Categories</a>
+        <span class="detail-breadcrumbs-sep">/</span>
+        <span>{category.name}</span>
+      </nav>
       <p class="eyebrow">Category</p>
-      <h1>{category.name}</h1>
-      <p class="lead">{category.description}</p>
-      <div class="badge-row">
-        <Badge
-          text={getCategoryStateLabel(category.category_state)}
-          tone={getCategoryStateTone(category.category_state)}
-        />
-        <Badge
-          text={entryCountLabel}
-          tone="outline"
-        />
+      <h1 style="margin-top:0.75rem;margin-bottom:1rem;">{category.name}</h1>
+      <p class="lead" style="max-width:60ch;">{category.description}</p>
+      <div class="badge-row" style="margin-top:1.25rem;">
+        <Badge text={stateLabel} tone={stateTone} dot />
+        <Badge text={entryCountLabel} tone="outline" />
+        {category.shared_family && (
+          <Badge text={`Family · ${category.shared_family}`} tone="subtle" />
+        )}
       </div>
     </div>
   </section>
@@ -49,26 +54,44 @@ const entryCountLabel = `${entryCount} ${entryCount === 1 ? "entry" : "entries"}
         </div>
       ) : (
         <EmptyState
-          title="No catalog entries in this category yet"
-          copy="This category is intentionally present as part of the long-term taxonomy, but it does not currently contain a registered template."
-        />
+          title="Planned placeholder."
+          copy="No registered template yet."
+          symbol="◇"
+        >
+          {bootstrapEntry && (
+            <div class="button-row" style="margin-top:1rem;">
+              <a class="button button-secondary" href={withBase(`/templates/${bootstrapEntry.slug}`)}>
+                Scaffold · {bootstrapEntry.name}
+              </a>
+            </div>
+          )}
+        </EmptyState>
       )}
     </div>
   </section>
 
-  {bootstrapEntry && !entries.length && (
-    <section class="section section-alt">
-      <div class="container narrow">
-        <p class="eyebrow">Bootstrap Source</p>
-        <h2>Reference starting point</h2>
-        <p class="lead">
-          Future entries in this category are expected to derive from the report-family scaffold.
-        </p>
-        <p>
-          <a class="text-link" href={withBase(`/templates/${bootstrapEntry.slug}`)}>
+  {category.notes?.length > 0 && (
+    <section class="section section-inset">
+      <div class="container container-narrow">
+        <p class="eyebrow">Notes</p>
+        <ul class="detail-list" style="margin-top:1.25rem;">
+          {category.notes.map((note) => (
+            <li>{note}</li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {bootstrapEntry && isEmpty && (
+    <section class="section">
+      <div class="container container-narrow">
+        <p class="eyebrow">Bootstrap</p>
+        <div class="button-row" style="margin-top:0.75rem;">
+          <a class="button button-primary" href={withBase(`/templates/${bootstrapEntry.slug}`)}>
             Open {bootstrapEntry.name}
           </a>
-        </p>
+        </div>
       </div>
     </section>
   )}

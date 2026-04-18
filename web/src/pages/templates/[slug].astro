@@ -29,149 +29,194 @@ const downloadArchiveUrl = entry.site_assets?.download_archive_url
 const sourceDirectoryUrl = getRepositoryTreeUrl(entry.template_root);
 const metadataUrl = getRepositoryBlobUrl(entry.metadata_file);
 const readmeUrl = getRepositoryBlobUrl(entry.readme_file);
+const categoryName = entry.category_data?.name || entry.category;
+const kindTone = entry.kind === "scaffold" ? "accent" : "success";
+
+const facts = [
+  { label: "Category", value: categoryName, serif: true },
+  { label: "Kind", value: entry.catalog.kind_label },
+  { label: "Maturity", value: entry.catalog.maturity_label },
+  { label: "Engine", value: entry.engine },
+  { label: "Main file", value: entry.main_file },
+  { label: "Language", value: entry.language },
+  { label: "Version", value: entry.version },
+  { label: "License", value: entry.license },
+  { label: "Compile", value: entry.catalog.compilation_label },
+  { label: "Updated", value: entry.updated_at },
+];
 ---
 
 <BaseLayout title={entry.name} description={entry.description}>
+  <section class="detail-hero">
+    <div class="container">
+      <nav class="detail-breadcrumbs" aria-label="Breadcrumb">
+        <a href={withBase("/templates")}>Templates</a>
+        <span class="detail-breadcrumbs-sep">/</span>
+        <a href={withBase(`/categories/${entry.category_data?.slug || entry.category}`)}>
+          {categoryName}
+        </a>
+        <span class="detail-breadcrumbs-sep">/</span>
+        <span>{entry.name}</span>
+      </nav>
+      <div class="detail-hero-grid">
+        <div>
+          <p class="eyebrow">{categoryName}</p>
+          <h1>{entry.name}</h1>
+          <p class="lead">{entry.description}</p>
+          <div class="badge-row" style="margin-bottom:1.75rem;">
+            <Badge text={entry.catalog.kind_label} tone={kindTone} dot />
+            <Badge text={entry.catalog.maturity_label} tone="subtle" />
+            <Badge text={entry.engine.toUpperCase()} tone="outline" />
+            <Badge text={entry.catalog.compilation_label} tone="outline" />
+            {entry.featured && <Badge text="Featured" tone="strong" />}
+          </div>
+          <div class="detail-actions">
+            {previewDocumentUrl ? (
+              <a class="button button-primary" href={previewDocumentUrl} target="_blank" rel="noreferrer">
+                Open PDF
+              </a>
+            ) : (
+              <span class="button button-disabled">No PDF</span>
+            )}
+            {downloadArchiveUrl ? (
+              <a class="button button-secondary" href={downloadArchiveUrl}>
+                Download
+              </a>
+            ) : sourceDirectoryUrl ? (
+              <a class="button button-secondary" href={sourceDirectoryUrl} target="_blank" rel="noreferrer">
+                View source
+              </a>
+            ) : (
+              <span class="button button-disabled">No source link</span>
+            )}
+          </div>
+        </div>
+        <div class="detail-hero-preview">
+          <PreviewTile entry={entry} size="hero" />
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section">
     <div class="container detail-grid">
       <div class="detail-main">
-        <p class="eyebrow">{entry.category_data?.name || entry.category}</p>
-        <h1>{entry.name}</h1>
-        <p class="lead">{entry.description}</p>
-        <div class="badge-row">
-          <Badge text={entry.catalog.kind_label} tone={entry.kind === "scaffold" ? "accent" : "success"} />
-          <Badge text={entry.catalog.maturity_label} tone="subtle" />
-          <Badge text={entry.catalog.compilation_label} tone="outline" />
-          <Badge text={entry.engine} tone="outline" />
-        </div>
+        {entry.intended_use && (
+          <section class="detail-section">
+            <h2>Intended for</h2>
+            <p class="ink-muted" style="font-size:1.02rem;line-height:1.65;">
+              {entry.intended_use}.
+            </p>
+          </section>
+        )}
 
-        <div class="detail-actions">
-          {previewDocumentUrl ? (
-            <a class="button button-primary" href={previewDocumentUrl} target="_blank" rel="noreferrer">
-              Open preview PDF
-            </a>
-          ) : (
-            <span class="button button-disabled">Preview PDF not available</span>
-          )}
-          {downloadArchiveUrl ? (
-            <a class="button button-secondary" href={downloadArchiveUrl}>
-              Download archive
-            </a>
-          ) : (
-            <span class="button button-disabled">Download archive not prepared</span>
-          )}
-        </div>
+        {entry.notes?.length > 0 && (
+          <section class="detail-section">
+            <h2>Notes</h2>
+            <ul class="detail-list">
+              {entry.notes.map((note) => (
+                <li>{note}</li>
+              ))}
+            </ul>
+          </section>
+        )}
 
-        <dl class="detail-facts">
-          <div>
-            <dt>Category</dt>
-            <dd>{entry.category_data?.name || entry.category}</dd>
-          </div>
-          <div>
-            <dt>Intended use</dt>
-            <dd>{entry.intended_use}</dd>
-          </div>
-          <div>
-            <dt>Main file</dt>
-            <dd>{entry.main_file}</dd>
-          </div>
-          <div>
-            <dt>Language</dt>
-            <dd>{entry.language}</dd>
-          </div>
-          <div>
-            <dt>Version</dt>
-            <dd>{entry.version}</dd>
-          </div>
-          <div>
-            <dt>License</dt>
-            <dd>{entry.license}</dd>
-          </div>
-        </dl>
+        {entry.dependencies?.length > 0 && (
+          <section class="detail-section">
+            <h2>Dependencies</h2>
+            <div class="badge-row">
+              {entry.dependencies.map((dependency) => (
+                <Badge text={dependency} tone="outline" />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {entry.tags?.length > 0 && (
+          <section class="detail-section">
+            <h2>Tags</h2>
+            <div class="badge-row">
+              {entry.tags.map((tag) => (
+                <Badge text={`#${tag}`} tone="subtle" />
+              ))}
+            </div>
+          </section>
+        )}
 
         <section class="detail-section">
-          <h2>Dependencies</h2>
-          <div class="badge-row">
-            {entry.dependencies.map((dependency) => (
-              <Badge text={dependency} tone="outline" />
-            ))}
-          </div>
-        </section>
-
-        <section class="detail-section">
-          <h2>Catalog notes</h2>
-          <ul class="detail-list">
-            {entry.notes.map((note) => (
-              <li>{note}</li>
-            ))}
-          </ul>
-        </section>
-
-        <section class="detail-section">
-          <h2>Repository sources</h2>
-          <ul class="detail-list">
+          <h2>Sources</h2>
+          <ul class="detail-source-list">
             <li>
-              Source location:
-              {sourceDirectoryUrl ? (
-                <a href={sourceDirectoryUrl} target="_blank" rel="noreferrer">
-                  {entry.template_root}
-                </a>
-              ) : (
-                <code>{entry.template_root}</code>
-              )}
+              <span class="detail-source-list-label">Source</span>
+              <span class="detail-source-list-value">
+                {sourceDirectoryUrl ? (
+                  <a href={sourceDirectoryUrl} target="_blank" rel="noreferrer">{entry.template_root}</a>
+                ) : (
+                  entry.template_root
+                )}
+              </span>
             </li>
             <li>
-              Metadata:
-              {metadataUrl ? (
-                <a href={metadataUrl} target="_blank" rel="noreferrer">
-                  {entry.metadata_file}
-                </a>
-              ) : (
-                <code>{entry.metadata_file}</code>
-              )}
+              <span class="detail-source-list-label">Metadata</span>
+              <span class="detail-source-list-value">
+                {metadataUrl ? (
+                  <a href={metadataUrl} target="_blank" rel="noreferrer">{entry.metadata_file}</a>
+                ) : (
+                  entry.metadata_file
+                )}
+              </span>
             </li>
             <li>
-              README:
-              {readmeUrl ? (
-                <a href={readmeUrl} target="_blank" rel="noreferrer">
-                  {entry.readme_file}
-                </a>
-              ) : (
-                <code>{entry.readme_file}</code>
-              )}
+              <span class="detail-source-list-label">README</span>
+              <span class="detail-source-list-value">
+                {readmeUrl ? (
+                  <a href={readmeUrl} target="_blank" rel="noreferrer">{entry.readme_file}</a>
+                ) : (
+                  entry.readme_file
+                )}
+              </span>
+            </li>
+            <li>
+              <span class="detail-source-list-label">Main file</span>
+              <span class="detail-source-list-value">{entry.main_file}</span>
             </li>
           </ul>
         </section>
       </div>
 
-      <aside class="detail-sidebar">
-        <PreviewTile entry={entry} size="hero" />
+      <aside class="detail-sidebar" aria-label="Quick facts">
+        <div class="detail-facts">
+          <dl>
+            {facts.map((fact) => fact.value && (
+              <div class:list={["detail-facts-row", fact.serif && "detail-facts-row-serif"]}>
+                <dt>{fact.label}</dt>
+                <dd>{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+        {entry.author && (
+          <p class="ink-muted" style="font-size:0.82rem;">
+            Maintained by {entry.author}.
+          </p>
+        )}
       </aside>
     </div>
   </section>
 
-  <section class="section section-alt">
-    <div class="container">
-      {relatedEntries.length ? (
-        <>
-          <div class="section-header">
-            <div>
-              <p class="eyebrow">Related</p>
-              <h2>Related entries</h2>
-            </div>
-          </div>
-          <div class="card-grid">
-            {relatedEntries.map((relatedEntry) => (
-              <TemplateCard entry={relatedEntry} />
-            ))}
-          </div>
-        </>
-      ) : (
-        <EmptyState
-          title="No related entries yet"
-          copy="Related suggestions will appear here as the catalog grows within the same category or family."
-        />
-      )}
-    </div>
-  </section>
+  {relatedEntries.length > 0 && (
+    <section class="section section-inset">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow">Related</p>
+          <a class="arrow-link" href={withBase("/templates")}>All entries</a>
+        </div>
+        <div class="card-grid">
+          {relatedEntries.map((relatedEntry) => (
+            <TemplateCard entry={relatedEntry} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 </BaseLayout>

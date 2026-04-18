@@ -1,9 +1,11 @@
 ---
-import Badge from "./Badge.astro";
 import PreviewTile from "./PreviewTile.astro";
 import { withBase } from "../lib/site";
 
 const { entry } = Astro.props;
+const categoryName = entry.category_data?.name || entry.category;
+const engineLabel = entry.engine?.toUpperCase();
+const kindLabel = entry.catalog?.kind_label || (entry.kind === "scaffold" ? "Scaffold" : "Template");
 ---
 
 <article
@@ -15,24 +17,26 @@ const { entry } = Astro.props;
   data-kind={entry.kind}
   data-featured={String(entry.featured)}
 >
-  <PreviewTile entry={entry} />
+  <a href={withBase(`/templates/${entry.slug}`)} aria-label={`Open ${entry.name}`} style="display:contents">
+    <PreviewTile entry={entry} />
+  </a>
   <div class="template-card-body">
-    <div class="card-meta-row">
-      <span class="eyebrow">{entry.category_data?.name || entry.category}</span>
-      <span class="source-path">{entry.template_root}</span>
+    <div class="template-card-meta">
+      <span>{categoryName}</span>
+      <span class="status-dot" data-kind={entry.kind}>{kindLabel}</span>
+      {entry.featured && <span class="template-card-pin">Pinned</span>}
     </div>
-    <h3 class="card-title">
+    <h3 class="template-card-title">
       <a href={withBase(`/templates/${entry.slug}`)}>{entry.name}</a>
     </h3>
-    <p class="card-description">{entry.description}</p>
-    <div class="badge-row">
-      <Badge text={entry.catalog.kind_label} tone={entry.kind === "scaffold" ? "accent" : "success"} />
-      <Badge text={entry.catalog.maturity_label} tone="subtle" />
-      <Badge text={entry.engine} tone="outline" />
+    <p class="template-card-description">{entry.description}</p>
+    <div class="template-card-footer">
+      <div class="template-card-footer-left">
+        <span class="mono">{engineLabel}</span>
+        <span aria-hidden="true" class="ink-subtle">·</span>
+        <span>{entry.catalog.maturity_label}</span>
+      </div>
+      <span class="source-path" title={entry.template_root}>{entry.template_root}</span>
     </div>
-    <p class="card-supporting">
-      {entry.catalog.compilation_label}
-      {entry.site_assets?.preview_document_url ? " • Preview PDF available" : " • No preview PDF yet"}
-    </p>
   </div>
 </article>

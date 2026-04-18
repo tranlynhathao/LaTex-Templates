@@ -61,3 +61,5 @@ node_modules/
 dist/
 web/src/generated/
 web/public/site-assets/
+
+notes.md

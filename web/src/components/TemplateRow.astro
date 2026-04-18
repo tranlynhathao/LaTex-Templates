@@ -1,0 +1,49 @@
+---
+import { withBase } from "../lib/site";
+
+const { entry } = Astro.props;
+const previewImageUrl = entry.site_assets?.preview_image_url
+  ? withBase(entry.site_assets.preview_image_url)
+  : null;
+const categoryName = entry.category_data?.name || entry.category;
+const kindLabel = entry.catalog?.kind_label || (entry.kind === "scaffold" ? "Scaffold" : "Template");
+---
+
+<article
+  class="result-row"
+  data-template-row
+  data-search={entry.catalog.search_text}
+  data-category={entry.category}
+  data-engine={entry.engine}
+  data-kind={entry.kind}
+  data-featured={String(entry.featured)}
+>
+  <a
+    class="result-row-thumb"
+    href={withBase(`/templates/${entry.slug}`)}
+    aria-label={`Open ${entry.name}`}
+  >
+    {previewImageUrl ? (
+      <img src={previewImageUrl} alt="" loading="lazy" />
+    ) : (
+      <span class="result-row-thumb-empty">{entry.engine}</span>
+    )}
+  </a>
+  <div class="result-row-body">
+    <div class="result-row-meta">
+      <span class="status-dot" data-kind={entry.kind}>{kindLabel}</span>
+      <span class="dot" aria-hidden="true"></span>
+      <span>{categoryName}</span>
+      <span class="dot" aria-hidden="true"></span>
+      <span>{entry.engine.toUpperCase()}</span>
+    </div>
+    <h3 class="result-row-title">
+      <a href={withBase(`/templates/${entry.slug}`)}>{entry.name}</a>
+    </h3>
+    <p class="result-row-copy">{entry.description}</p>
+  </div>
+  <div class="result-row-side">
+    <span class="mono" style="font-size:0.72rem;">{entry.template_root}</span>
+    <span class="arrow" aria-hidden="true">→</span>
+  </div>
+</article>

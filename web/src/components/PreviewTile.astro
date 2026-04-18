@@ -1,27 +1,94 @@
 ---
-import Badge from "./Badge.astro";
 import { withBase } from "../lib/site";
 
 const { entry, size = "card" } = Astro.props;
-const previewImageUrl = entry.site_assets?.preview_image_url
-  ? withBase(entry.site_assets.preview_image_url)
-  : null;
-const placeholderTitle =
-  entry.kind === "scaffold" ? "Scaffold preview pending" : "Preview image unavailable";
-const placeholderCopy =
-  entry.site_assets?.preview_document_url
-    ? "A preview document is available even though no thumbnail has been registered yet."
-    : "This catalog entry is visible without a thumbnail so the listing stays honest about available assets.";
+const assets = entry.site_assets || {};
+const previewImageUrl = assets.preview_image_url ? withBase(assets.preview_image_url) : null;
+const previewDocumentUrl = assets.preview_document_url ? withBase(assets.preview_document_url) : null;
+const previewSource = assets.preview_image_source; // "declared" | "auto-pdf" | null
+
+const engineTag = entry.engine?.toUpperCase();
+const categoryTag = entry.category_data?.name || entry.category;
+const kindTag = entry.kind === "scaffold" ? "Scaffold" : "Template";
+
+const imageAlt = previewSource === "auto-pdf"
+  ? `First page of the compiled PDF preview for ${entry.name}`
+  : `Preview for ${entry.name}`;
+
+// Page-aware framing: when we know the rendered page's intrinsic pixel
+// dimensions, let the tile adopt that aspect ratio so the page fills the
+// frame without letterboxing or undersized appearance.
+const rawW = Number(assets.preview_image_width) || 0;
+const rawH = Number(assets.preview_image_height) || 0;
+const hasIntrinsic = rawW > 0 && rawH > 0;
+const intrinsicRatio = hasIntrinsic ? rawW / rawH : null;
+const isPortrait = intrinsicRatio !== null && intrinsicRatio < 0.95;
+const isLandscape = intrinsicRatio !== null && intrinsicRatio > 1.15;
+
+const pageShape = !hasIntrinsic
+  ? "unknown"
+  : isPortrait
+    ? "portrait"
+    : isLandscape
+      ? "landscape"
+      : "square";
+
+const tileStyle = hasIntrinsic
+  ? `--preview-aspect: ${rawW} / ${rawH};`
+  : undefined;
 ---
 
-<div class:list={["preview-tile", `preview-${size}`]}>
+<div
+  class:list={["preview-tile", size === "hero" && "preview-hero"]}
+  data-page-shape={pageShape}
+  data-preview-source={previewSource || "none"}
+  style={tileStyle}
+>
   {previewImageUrl ? (
-    <img src={previewImageUrl} alt={`Preview for ${entry.name}`} loading="lazy" />
+    <>
+      <img src={previewImageUrl} alt={imageAlt} loading="lazy" />
+      {size === "hero" && previewSource === "auto-pdf" && (
+        <span class="preview-badge" title="Rendered from the first page of the compiled PDF">
+          Auto-rendered from PDF · page 1
+        </span>
+      )}
+    </>
+  ) : previewDocumentUrl && size === "hero" ? (
+    <div class="preview-pdf">
+      <object
+        class="preview-pdf-frame"
+        data={`${previewDocumentUrl}#view=FitH&toolbar=0&navpanes=0`}
+        type="application/pdf"
+        aria-label={`Inline preview of the compiled document for ${entry.name}`}
+      >
+        <div class="preview-pdf-fallback">
+          <p class="preview-placeholder-mono">PDF preview unavailable in browser</p>
+          <p class="preview-placeholder-title">{entry.name}</p>
+          <p class="preview-placeholder-copy">
+            This browser can't embed the PDF inline. Use the preview action above to open it in a
+            new tab.
+          </p>
+        </div>
+      </object>
+      <span class="preview-badge">Inline PDF · compiled document</span>
+    </div>
   ) : (
     <div class="preview-placeholder">
-      <Badge text={entry.kind === "scaffold" ? "Scaffold" : "Template"} tone="accent" />
-      <p class="preview-placeholder-title">{placeholderTitle}</p>
-      <p class="preview-placeholder-copy">{placeholderCopy}</p>
+      <div class="preview-placeholder-mono">
+        <span>{categoryTag}</span>
+        {engineTag && <span> · {engineTag}</span>}
+      </div>
+      <div>
+        <p class="preview-placeholder-title">{entry.name}</p>
+        <p class="preview-placeholder-copy">
+          {entry.kind === "scaffold"
+            ? "Reference scaffold — no compiled document registered yet. Source remains fully browseable."
+            : previewDocumentUrl
+              ? "Inline PDF preview not supported in this listing view. Open the detail page for the full preview."
+              : "No preview asset registered yet. Metadata and source files remain fully browseable."}
+        </p>
+      </div>
+      <div class="preview-placeholder-mono">{kindTag}</div>
     </div>
   )}
 </div>

@@ -1,0 +1,15 @@
+---
+import { withBase } from "../lib/site";
+
+const { category, muted = false } = Astro.props;
+const count = category.entry_counts?.total || 0;
+---
+
+<a
+  class:list={["chip", muted && "chip-muted"]}
+  href={withBase(`/categories/${category.slug}`)}
+  data-state={category.category_state}
+>
+  <span>{category.name}</span>
+  {count > 0 && <span class="chip-count">{count}</span>}
+</a>

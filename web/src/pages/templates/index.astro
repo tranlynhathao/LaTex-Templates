@@ -1,35 +1,154 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import CatalogBrowser from "../../components/CatalogBrowser.astro";
-import { getEntries, getFilterOptions } from "../../lib/catalog";
+import CategoryShortcut from "../../components/CategoryShortcut.astro";
+import TemplateCard from "../../components/TemplateCard.astro";
+import EmptyState from "../../components/EmptyState.astro";
+import { getCategories, getEntries, getSiteData } from "../../lib/catalog";
+import { withBase } from "../../lib/site";
 
 const entries = getEntries();
-const filterOptions = getFilterOptions();
+const summary = getSiteData().summary;
+const realTemplates = entries.filter((e) => e.kind === "real-template");
+const scaffolds = entries.filter((e) => e.kind === "scaffold");
+const featuredCount = entries.filter((e) => e.featured).length;
+const categories = getCategories();
+const populatedCategories = categories.filter((c) => (c.entry_counts?.total || 0) > 0);
+const scaffoldBackedCategories = categories.filter((c) => c.category_state === "scaffold-backed");
+const upcomingCategories = categories
+  .filter((c) => c.category_state === "empty-placeholder")
+  .slice(0, 8);
 ---
 
 <BaseLayout
   title="Templates"
-  description="Browse all catalog entries across templates and scaffolds."
+  description="The primary browsing workspace for curated LaTeX templates and reusable scaffolds."
 >
-  <section class="section">
-    <div class="container narrow">
-      <p class="eyebrow">Templates</p>
-      <h1>Catalog listing</h1>
-      <p class="lead">
-        This listing is generated from registry data. Real templates and scaffolds are both shown,
-        but clearly labeled so the gallery does not overstate what is already production-ready.
-      </p>
+  <section class="workspace-head">
+    <div class="container">
+      <div class="workspace-head-row">
+        <div class="workspace-head-title">
+          <p class="eyebrow">Catalog</p>
+          <h1>Browse.</h1>
+        </div>
+        <a class="workspace-search-hint" href={withBase("/search")}>
+          <span class="workspace-search-hint-cta">
+            <span>Search</span>
+            <kbd>/</kbd>
+          </span>
+        </a>
+      </div>
+
+      <dl class="workspace-ribbon" aria-label="Catalog composition">
+        <div class="workspace-ribbon-item" data-tone="real">
+          <dt>Real</dt>
+          <dd>{realTemplates.length}</dd>
+        </div>
+        <div class="workspace-ribbon-item" data-tone="scaffold">
+          <dt>Scaffolds</dt>
+          <dd>{scaffolds.length}</dd>
+        </div>
+        <div class="workspace-ribbon-item">
+          <dt>Categories</dt>
+          <dd>{populatedCategories.length}</dd>
+        </div>
+      </dl>
+
+      {populatedCategories.length > 0 && (
+        <div class="workspace-jump" aria-label="Jump to a category">
+          <span class="workspace-jump-label">Jump</span>
+          <div class="chip-row">
+            {populatedCategories.map((category) => (
+              <CategoryShortcut category={category} />
+            ))}
+            {scaffoldBackedCategories
+              .filter((c) => !populatedCategories.some((p) => p.id === c.id))
+              .map((category) => (
+                <CategoryShortcut category={category} />
+              ))}
+            {upcomingCategories.map((category) => (
+              <CategoryShortcut category={category} muted />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   </section>
 
-  <section class="section">
+  <section class="section workspace-body">
     <div class="container">
-      <CatalogBrowser
-        entries={entries}
-        filterOptions={filterOptions}
-        title="Filter the catalog"
-        copy="Search by name, description, tags, engine, or entry type."
-      />
+      <div class="catalog-shelf">
+        <div class="catalog-shelf-head">
+          <div class="catalog-shelf-title">
+            <h2>Real templates</h2>
+            <span class="catalog-shelf-count">
+              {realTemplates.length} {realTemplates.length === 1 ? "entry" : "entries"}
+              {featuredCount > 0 && (
+                <span class="catalog-shelf-note">· {featuredCount} pinned</span>
+              )}
+            </span>
+          </div>
+        </div>
+        {realTemplates.length > 0 ? (
+          <div class="card-grid">
+            {realTemplates.map((entry) => (
+              <TemplateCard entry={entry} />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title="No real templates yet"
+            copy="The catalog is small on purpose. Entries will appear here as real packages are added to the registry."
+            symbol="—"
+          />
+        )}
+      </div>
     </div>
   </section>
+
+  {scaffolds.length > 0 && (
+    <section class="section section-inset">
+      <div class="container">
+        <div class="catalog-shelf">
+          <div class="catalog-shelf-head">
+            <div class="catalog-shelf-title">
+              <h2>Scaffolds</h2>
+              <span class="catalog-shelf-count">
+                {scaffolds.length} {scaffolds.length === 1 ? "entry" : "entries"}
+              </span>
+            </div>
+          </div>
+          <div class="scaffold-list">
+            {scaffolds.map((entry) => (
+              <article class="scaffold-row">
+                <div>
+                  <p class="scaffold-row-eyebrow">
+                    {entry.catalog.maturity_label} · {entry.engine.toUpperCase()}
+                  </p>
+                  <h3 class="scaffold-row-title">
+                    <a href={withBase(`/templates/${entry.slug}`)}>{entry.name}</a>
+                  </h3>
+                  <p class="scaffold-row-copy">{entry.description}</p>
+                  <div class="scaffold-row-meta">
+                    <span class="mono">{entry.template_root}</span>
+                    {entry.family && (
+                      <>
+                        <span aria-hidden="true" class="ink-subtle">·</span>
+                        <span>Family · {entry.family}</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+                <a
+                  class="button button-ghost button-sm"
+                  href={withBase(`/templates/${entry.slug}`)}
+                >
+                  Open scaffold →
+                </a>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
 </BaseLayout>

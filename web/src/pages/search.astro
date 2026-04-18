@@ -1,36 +1,340 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import CatalogBrowser from "../components/CatalogBrowser.astro";
+import TemplateRow from "../components/TemplateRow.astro";
 import { getEntries, getFilterOptions } from "../lib/catalog";
+import { withBase } from "../lib/site";
 
 const entries = getEntries();
 const filterOptions = getFilterOptions();
+const populatedCategories = filterOptions.categories.filter((c) => c.count > 0);
+
+const tagFreq = new Map();
+for (const entry of entries) {
+  for (const tag of entry.tags || []) {
+    tagFreq.set(tag, (tagFreq.get(tag) || 0) + 1);
+  }
+}
+const popularTags = Array.from(tagFreq.entries())
+  .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+  .slice(0, 10)
+  .map(([tag, count]) => ({ tag, count }));
+
 ---
 
 <BaseLayout
   title="Search"
-  description="Search the static template catalog by metadata, tags, engine, or category."
+  description="Query the LaTeX template catalog."
 >
-  <section class="section">
-    <div class="container narrow">
-      <p class="eyebrow">Search</p>
-      <h1>Search the catalog</h1>
-      <p class="lead">
-        The search surface is static-first. It filters pre-rendered entries using registry-derived
-        metadata, which keeps the site deployable on GitHub Pages without a backend.
-      </p>
+  <section class="search-hero">
+    <div class="container">
+      <div class="search-hero-head">
+        <p class="eyebrow">Search</p>
+        <span class="mono ink-subtle">
+          {entries.length} indexed {entries.length === 1 ? "entry" : "entries"}
+        </span>
+      </div>
+
+      <div class="search-input-wrap" data-search-wrap>
+        <svg class="search-input-icon" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">
+          <circle cx="9" cy="9" r="6" />
+          <path d="M14 14l4 4" stroke-linecap="round" />
+        </svg>
+        <input
+          class="search-input"
+          type="search"
+          name="q"
+          placeholder="Name, tag, engine…"
+          autocomplete="off"
+          spellcheck="false"
+          aria-label="Search the template catalog"
+          data-search-input
+        />
+        <span class="search-input-kbd" aria-hidden="true">
+          <span>Press</span>
+          <kbd>/</kbd>
+        </span>
+        <button type="button" class="search-clear" aria-label="Clear search" data-search-clear>
+          ×
+        </button>
+      </div>
+
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" style="padding-top:2rem;">
     <div class="container">
-      <CatalogBrowser
-        entries={entries}
-        filterOptions={filterOptions}
-        title="Search and refine"
-        copy="Use the controls below to narrow by category, engine, kind, or featured status."
-        autofocus={true}
-      />
+      <div class="search-grid">
+        <aside class="search-filters" aria-label="Refine results" data-search-filters>
+          <h3>Refine</h3>
+
+          <div class="search-filter-group">
+            <label>
+              <span>Category</span>
+              <select data-filter="category">
+                <option value="">Any category</option>
+                {populatedCategories.map((category) => (
+                  <option value={category.id}>{category.name} · {category.count}</option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <div class="search-filter-group">
+            <label>
+              <span>Engine</span>
+              <select data-filter="engine">
+                <option value="">Any engine</option>
+                {filterOptions.engines.map((engine) => (
+                  <option value={engine}>{engine}</option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <div class="search-filter-group">
+            <label>
+              <span>Kind</span>
+              <select data-filter="kind">
+                <option value="">Templates and scaffolds</option>
+                {filterOptions.kinds.map((kind) => (
+                  <option value={kind}>{kind}</option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <label class="search-filter-check">
+            <input type="checkbox" data-filter="featured" />
+            <span>Featured only</span>
+          </label>
+
+          <button type="button" class="search-reset" data-search-reset>
+            Reset all filters
+          </button>
+        </aside>
+
+        <div class="search-results" data-search-results>
+          <div class="search-summary">
+            <div class="search-summary-count">
+              <span class="count" data-results-count>{entries.length}</span>
+              <span class="count-label" data-results-label>
+                {entries.length === 1 ? "result" : "results"}
+              </span>
+            </div>
+            <div class="search-summary-chips" data-summary-chips>
+              <span class="search-summary-chips-empty" data-summary-empty>No active filters</span>
+            </div>
+          </div>
+
+          <div class="result-list" data-result-list>
+            {entries.map((entry) => (
+              <TemplateRow entry={entry} />
+            ))}
+          </div>
+
+          <div class="search-empty" data-search-empty hidden>
+            <div class="empty-state-icon" aria-hidden="true">?</div>
+            <h3>No results.</h3>
+            <div class="search-empty-hints">
+              <span class="search-empty-hints-label">Try a tag</span>
+              <div class="chip-row" data-tag-suggestions>
+                {popularTags.map(({ tag, count }) => (
+                  <button type="button" class="chip" data-tag-suggestion={tag}>
+                    <span>{tag}</span>
+                    <span class="chip-count">{count}</span>
+                  </button>
+                ))}
+              </div>
+              <a class="arrow-link" href={withBase("/templates")} style="margin-top:0.5rem;">
+                Browse the catalog
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </BaseLayout>
+
+<script
+  is:inline
+  id="__category_names__"
+  type="application/json"
+  set:html={JSON.stringify(
+    Object.fromEntries(populatedCategories.map((c) => [c.id, c.name]))
+  )}
+></script>
+
+<script is:inline>
+  (function () {
+    const wrap = document.querySelector("[data-search-wrap]");
+    const input = document.querySelector("[data-search-input]");
+    const clear = document.querySelector("[data-search-clear]");
+    const filtersPanel = document.querySelector("[data-search-filters]");
+    const resetBtn = document.querySelector("[data-search-reset]");
+    const rows = document.querySelectorAll("[data-template-row]");
+    const countNode = document.querySelector("[data-results-count]");
+    const labelNode = document.querySelector("[data-results-label]");
+    const emptyNode = document.querySelector("[data-search-empty]");
+    const resultList = document.querySelector("[data-result-list]");
+    const summaryChips = document.querySelector("[data-summary-chips]");
+    const summaryEmpty = document.querySelector("[data-summary-empty]");
+    const tagSuggestions = document.querySelectorAll("[data-tag-suggestion]");
+
+    if (!wrap || !input) return;
+
+    const categoryNames = JSON.parse(
+      document.getElementById("__category_names__")?.textContent || "{}"
+    );
+
+    const params = new URLSearchParams(window.location.search);
+    const filterSelects = {
+      category: filtersPanel.querySelector('[data-filter="category"]'),
+      engine: filtersPanel.querySelector('[data-filter="engine"]'),
+      kind: filtersPanel.querySelector('[data-filter="kind"]'),
+    };
+    const featuredCheck = filtersPanel.querySelector('[data-filter="featured"]');
+
+    if (params.get("q")) input.value = params.get("q");
+    for (const key of Object.keys(filterSelects)) {
+      if (params.get(key)) filterSelects[key].value = params.get(key);
+    }
+    if (params.get("featured") === "1") featuredCheck.checked = true;
+
+    const labelFor = {
+      category: (v) => categoryNames[v] || v,
+      engine: (v) => v.toUpperCase(),
+      kind: (v) => v,
+      featured: () => "featured",
+    };
+
+    const syncUrl = (state) => {
+      const next = new URLSearchParams();
+      if (state.q) next.set("q", state.q);
+      if (state.category) next.set("category", state.category);
+      if (state.engine) next.set("engine", state.engine);
+      if (state.kind) next.set("kind", state.kind);
+      if (state.featured) next.set("featured", "1");
+      const query = next.toString();
+      const url = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+      window.history.replaceState({}, "", url);
+    };
+
+    const renderSummaryChips = (state) => {
+      summaryChips.innerHTML = "";
+      const chips = [];
+
+      if (state.q) {
+        chips.push({ key: "q", label: `"${state.q}"` });
+      }
+      for (const key of ["category", "engine", "kind"]) {
+        if (state[key]) chips.push({ key, label: `${key}: ${labelFor[key](state[key])}` });
+      }
+      if (state.featured) chips.push({ key: "featured", label: "featured only" });
+
+      if (!chips.length) {
+        const placeholder = document.createElement("span");
+        placeholder.className = "search-summary-chips-empty";
+        placeholder.textContent = "No active filters";
+        summaryChips.appendChild(placeholder);
+        return;
+      }
+
+      for (const chip of chips) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "filter-chip";
+        btn.innerHTML = `<span>${chip.label}</span><span class="chip-x" aria-hidden="true">×</span>`;
+        btn.setAttribute("aria-label", `Remove filter ${chip.label}`);
+        btn.addEventListener("click", () => {
+          if (chip.key === "q") {
+            input.value = "";
+          } else if (chip.key === "featured") {
+            featuredCheck.checked = false;
+          } else {
+            filterSelects[chip.key].value = "";
+          }
+          apply();
+        });
+        summaryChips.appendChild(btn);
+      }
+    };
+
+    const apply = () => {
+      const state = {
+        q: input.value.trim(),
+        category: filterSelects.category.value,
+        engine: filterSelects.engine.value,
+        kind: filterSelects.kind.value,
+        featured: featuredCheck.checked,
+      };
+      const qLower = state.q.toLowerCase();
+
+      let visible = 0;
+      rows.forEach((row) => {
+        const text = row.dataset.search || "";
+        const matchQ = !qLower || text.includes(qLower);
+        const matchC = !state.category || row.dataset.category === state.category;
+        const matchE = !state.engine || row.dataset.engine === state.engine;
+        const matchK = !state.kind || row.dataset.kind === state.kind;
+        const matchF = !state.featured || row.dataset.featured === "true";
+        const show = matchQ && matchC && matchE && matchK && matchF;
+        row.hidden = !show;
+        if (show) visible += 1;
+      });
+
+      if (countNode) countNode.textContent = String(visible);
+      if (labelNode) labelNode.textContent = visible === 1 ? "result" : "results";
+
+      if (emptyNode) emptyNode.hidden = visible !== 0;
+      if (resultList) resultList.hidden = visible === 0;
+
+      wrap.dataset.hasQuery = state.q ? "true" : "false";
+      renderSummaryChips(state);
+      syncUrl(state);
+    };
+
+    input.addEventListener("input", apply);
+    clear.addEventListener("click", () => {
+      input.value = "";
+      input.focus();
+      apply();
+    });
+    for (const key of Object.keys(filterSelects)) {
+      filterSelects[key].addEventListener("change", apply);
+    }
+    featuredCheck.addEventListener("change", apply);
+    resetBtn.addEventListener("click", () => {
+      input.value = "";
+      filterSelects.category.value = "";
+      filterSelects.engine.value = "";
+      filterSelects.kind.value = "";
+      featuredCheck.checked = false;
+      apply();
+      input.focus();
+    });
+
+    tagSuggestions.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        input.value = btn.dataset.tagSuggestion;
+        apply();
+        input.focus();
+      });
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "/" && document.activeElement !== input) {
+        e.preventDefault();
+        input.focus();
+        input.select();
+      }
+      if (e.key === "Escape" && document.activeElement === input) {
+        input.value = "";
+        apply();
+      }
+    });
+
+    input.focus();
+    apply();
+  })();
+</script>

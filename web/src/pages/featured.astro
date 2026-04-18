@@ -3,25 +3,27 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import EmptyState from "../components/EmptyState.astro";
 import TemplateCard from "../components/TemplateCard.astro";
 import { getFeaturedEntries } from "../lib/catalog";
+import { withBase } from "../lib/site";
 
 const entries = getFeaturedEntries();
+const countLabel = `${entries.length} ${entries.length === 1 ? "entry" : "entries"}`;
 ---
 
 <BaseLayout
   title="Featured"
-  description="Browse featured LaTeX templates and scaffolds from the static catalog."
+  description="Templates and scaffolds flagged as featured in repository metadata."
 >
-  <section class="section">
-    <div class="container narrow">
+  <section class="section-tight" style="padding-top:3.5rem;">
+    <div class="container">
       <p class="eyebrow">Featured</p>
-      <h1>Highlighted catalog entries</h1>
-      <p class="lead">
-        Featured entries are flagged in repository metadata and rendered here automatically.
-      </p>
+      <h1 style="margin-top:0.75rem;margin-bottom:0.75rem;max-width:20ch;">
+        Pinned entries.
+      </h1>
+      <p class="ink-subtle mono">{countLabel}</p>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" style="padding-top:1.5rem;">
     <div class="container">
       {entries.length ? (
         <div class="card-grid">
@@ -31,9 +33,14 @@ const entries = getFeaturedEntries();
         </div>
       ) : (
         <EmptyState
-          title="No featured entries yet"
-          copy="Mark an entry as featured in its metadata to surface it here."
-        />
+          title="Nothing pinned yet."
+          copy="Flag a template as featured in its metadata."
+          symbol="★"
+        >
+          <div class="button-row" style="margin-top:1rem;">
+            <a class="button button-ghost" href={withBase("/templates")}>Browse all templates</a>
+          </div>
+        </EmptyState>
       )}
     </div>
   </section>

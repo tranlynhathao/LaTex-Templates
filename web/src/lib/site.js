@@ -1,6 +1,5 @@
 export const SITE_NAME = "LaTeX Template Gallery";
-export const SITE_TAGLINE =
-  "A static catalog for preserved LaTeX templates, reusable scaffolds, and future document families.";
+export const SITE_TAGLINE = "A static catalog of LaTeX templates.";
 
 export function withBase(pathname = "/") {
   const base = import.meta.env.BASE_URL || "/";
@@ -24,9 +23,9 @@ export function getRepositoryBlobUrl(relativePath) {
 
 export function getCategoryStateLabel(state) {
   const labels = {
-    "real-templates-present": "Real Templates Present",
-    "scaffold-backed": "Scaffold Backed",
-    "empty-placeholder": "Placeholder Category",
+    "real-templates-present": "Populated",
+    "scaffold-backed": "Scaffold-backed",
+    "empty-placeholder": "Planned",
   };
 
   return labels[state] || state;

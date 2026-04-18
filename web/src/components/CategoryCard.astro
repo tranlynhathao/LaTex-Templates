@@ -1,26 +1,26 @@
 ---
-import Badge from "./Badge.astro";
-import { getCategoryStateLabel, getCategoryStateTone, withBase } from "../lib/site";
+import { getCategoryStateLabel, withBase } from "../lib/site";
 
-const { category } = Astro.props;
+const { category, index } = Astro.props;
 const count = category.entry_counts?.total || 0;
-const countLabel = `${count} ${count === 1 ? "entry" : "entries"}`;
+const countLabel = count === 0 ? "Empty" : `${count} ${count === 1 ? "entry" : "entries"}`;
+const indexLabel =
+  typeof index === "number" ? String(index + 1).padStart(2, "0") : null;
 ---
 
-<article class="category-card">
-  <div class="card-meta-row">
-    <span class="eyebrow">Category</span>
-    <span class="source-path">{category.slug}</span>
+<article class="category-card" data-state={category.category_state}>
+  <div class="category-card-head">
+    {indexLabel && <span class="category-card-index">{indexLabel}</span>}
+    <span class="category-card-state">{getCategoryStateLabel(category.category_state)}</span>
   </div>
-  <h3 class="card-title">
+  <h3 class="category-card-title">
     <a href={withBase(`/categories/${category.slug}`)}>{category.name}</a>
   </h3>
-  <p class="card-description">{category.description}</p>
-  <div class="badge-row">
-    <Badge text={getCategoryStateLabel(category.category_state)} tone={getCategoryStateTone(category.category_state)} />
-    <Badge text={countLabel} tone="outline" />
+  <p class="category-card-description">{category.description}</p>
+  <div class="category-card-footer">
+    <span class="category-card-count">{countLabel}</span>
+    {category.shared_family && (
+      <span class="ink-muted">Family · {category.shared_family}</span>
+    )}
   </div>
-  {category.shared_family && (
-    <p class="card-supporting">Shared family: {category.shared_family}</p>
-  )}
 </article>

@@ -7,14 +7,18 @@ import { withBase } from "../lib/site";
   title="Not Found"
   description="The requested catalog page could not be found."
 >
-  <section class="section">
-    <div class="container narrow">
-      <p class="eyebrow">404</p>
-      <h1>Page not found</h1>
-      <p class="lead">
-        This route does not map to a generated catalog page. Browse from the main listing instead.
-      </p>
-      <a class="button button-primary" href={withBase("/templates")}>Back to templates</a>
+  <section class="container error-block">
+    <p class="error-code">404 · Route not generated</p>
+    <h1 style="margin-bottom:1rem;max-width:18ch;margin-inline:auto;">
+      This page isn't in the catalog.
+    </h1>
+    <p class="lead" style="margin-inline:auto;">
+      The registry did not generate a page for this URL. Browse the catalog or category index to
+      continue.
+    </p>
+    <div class="button-row" style="justify-content:center;margin-top:1.75rem;">
+      <a class="button button-primary" href={withBase("/templates")}>Browse templates</a>
+      <a class="button button-ghost" href={withBase("/categories")}>View categories</a>
     </div>
   </section>
 </BaseLayout>

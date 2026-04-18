@@ -1,8 +1,10 @@
 ---
-const { title, copy } = Astro.props;
+const { title, copy, symbol = "∅", tone = "default" } = Astro.props;
 ---
 
-<section class="empty-state">
-  <h2>{title}</h2>
+<section class:list={["empty-state", tone === "inset" && "empty-state-inset"]}>
+  <div class="empty-state-icon" aria-hidden="true">{symbol}</div>
+  <h3>{title}</h3>
   <p>{copy}</p>
+  <slot />
 </section>

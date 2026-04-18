@@ -1,5 +1,5 @@
 ---
-const { text, tone = "subtle" } = Astro.props;
+const { text, tone = "subtle", dot = false } = Astro.props;
 ---
 
-<span class:list={["badge", `badge-${tone}`]}>{text}</span>
+<span class:list={["badge", `badge-${tone}`, dot && "badge-dot"]}>{text}</span>

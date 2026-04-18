@@ -2,22 +2,42 @@
 import { SITE_NAME, withBase } from "../lib/site";
 
 const links = [
-  { href: "/", label: "Home" },
-  { href: "/templates", label: "Templates" },
-  { href: "/categories", label: "Categories" },
-  { href: "/featured", label: "Featured" },
-  { href: "/search", label: "Search" },
+  { href: "/", label: "Overview", match: "/" },
+  { href: "/templates", label: "Templates", match: "/templates" },
+  { href: "/categories", label: "Categories", match: "/categories" },
+  { href: "/featured", label: "Featured", match: "/featured" },
+  { href: "/search", label: "Search", match: "/search" },
 ];
+
+const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const base = (import.meta.env.BASE_URL || "/").replace(/\/+$/, "") || "";
+const rawPath = currentPath.startsWith(base) ? currentPath.slice(base.length) || "/" : currentPath;
+
+function isActive(match) {
+  if (match === "/") return rawPath === "/" || rawPath === "";
+  return rawPath === match || rawPath.startsWith(`${match}/`);
+}
 ---
 
 <header class="site-header">
   <div class="container site-header-inner">
-    <a class="site-brand" href={withBase("/")}>{SITE_NAME}</a>
+    <a class="site-brand" href={withBase("/")} aria-label={`${SITE_NAME} — home`}>
+      <span class="site-brand-mark" aria-hidden="true">L</span>
+      <span class="site-brand-meta">
+        <span>LaTeX Gallery</span>
+        <span class="site-brand-sub">static catalog</span>
+      </span>
+    </a>
     <nav aria-label="Primary">
       <ul class="site-nav">
         {links.map((link) => (
           <li>
-            <a href={withBase(link.href)}>{link.label}</a>
+            <a
+              href={withBase(link.href)}
+              aria-current={isActive(link.match) ? "page" : undefined}
+            >
+              {link.label}
+            </a>
           </li>
         ))}
       </ul>

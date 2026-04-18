@@ -1,19 +1,38 @@
 ---
-import { SITE_NAME, withBase } from "../lib/site";
+import { SITE_NAME, withBase, repositoryUrl } from "../lib/site";
+
+const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <div class="container footer-grid">
-    <div>
-      <p class="footer-title">{SITE_NAME}</p>
-      <p class="footer-copy">
-        Static, metadata-driven gallery for reusable LaTeX templates and scaffolds.
-      </p>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <p class="footer-title">{SITE_NAME}</p>
+        <p class="footer-copy">A static catalog of LaTeX templates.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Browse</p>
+        <ul class="footer-list">
+          <li><a href={withBase("/templates")}>Templates</a></li>
+          <li><a href={withBase("/categories")}>Categories</a></li>
+          <li><a href={withBase("/featured")}>Featured</a></li>
+          <li><a href={withBase("/search")}>Search</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-heading">Project</p>
+        <ul class="footer-list">
+          {repositoryUrl && (
+            <li><a href={repositoryUrl} target="_blank" rel="noreferrer">Repository</a></li>
+          )}
+          <li><a href={withBase("/")}>Overview</a></li>
+        </ul>
+      </div>
     </div>
-    <div class="footer-links">
-      <a href={withBase("/templates")}>Browse Templates</a>
-      <a href={withBase("/categories")}>View Categories</a>
-      <a href={withBase("/featured")}>Featured Entries</a>
+    <div class="footer-bottom">
+      <span>© {year} {SITE_NAME}</span>
+      <span>Static · GitHub Pages</span>
     </div>
   </div>
 </footer>

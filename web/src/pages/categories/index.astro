@@ -1,31 +1,57 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import CategoryListRow from "../../components/CategoryListRow.astro";
 import CategoryCard from "../../components/CategoryCard.astro";
 import { getCategories } from "../../lib/catalog";
 
 const categories = getCategories();
+const populated = categories.filter((c) => (c.entry_counts?.total || 0) > 0);
+const placeholders = categories.filter((c) => c.category_state === "empty-placeholder");
 ---
 
 <BaseLayout
   title="Categories"
-  description="Browse the category structure for the LaTeX template platform."
+  description="The full taxonomy of the LaTeX template platform — populated categories and planned placeholders."
 >
-  <section class="section">
-    <div class="container narrow">
-      <p class="eyebrow">Categories</p>
-      <h1>Catalog taxonomy</h1>
-      <p class="lead">
-        Categories reflect the repository roadmap. Some contain real templates, some are scaffold
-        backed, and many remain explicit placeholders for future work.
+  <section class="section-tight" style="padding-top:3.5rem;">
+    <div class="container">
+      <p class="eyebrow">Taxonomy</p>
+      <h1 style="margin-top:0.75rem;margin-bottom:0.75rem;max-width:18ch;">
+        Categories.
+      </h1>
+      <p class="ink-subtle mono">
+        {populated.length} populated · {placeholders.length} planned
       </p>
     </div>
   </section>
 
-  <section class="section">
-    <div class="container card-grid category-grid">
-      {categories.map((category) => (
-        <CategoryCard category={category} />
-      ))}
+  {populated.length > 0 && (
+    <section class="section" style="padding-top:1.5rem;">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow">Populated</p>
+          <span class="ink-muted">{populated.length}</span>
+        </div>
+        <div class="card-grid">
+          {populated.map((category, i) => (
+            <CategoryCard category={category} index={i} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="section section-inset">
+    <div class="container">
+      <div class="section-header">
+        <p class="eyebrow">All</p>
+        <span class="ink-muted">{categories.length}</span>
+      </div>
+      <div class="category-list">
+        {categories.map((category, i) => (
+          <CategoryListRow category={category} index={i} />
+        ))}
+      </div>
     </div>
   </section>
 </BaseLayout>
