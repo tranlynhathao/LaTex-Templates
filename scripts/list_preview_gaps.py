@@ -19,11 +19,7 @@ def main() -> None:
             continue
 
         missing.append(
-            {
-                "id": payload["id"],
-                "template_root": str(metadata_file.parent.relative_to(ROOT)),
-                "kind": payload["kind"],
-            }
+            {"id": payload["id"], "template_root": str(metadata_file.parent.relative_to(ROOT)), "kind": payload["kind"]}
         )
 
     if not missing:

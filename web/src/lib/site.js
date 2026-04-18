@@ -4,8 +4,7 @@ export const SITE_TAGLINE = "A static catalog of LaTeX templates.";
 export function withBase(pathname = "/") {
   const base = import.meta.env.BASE_URL || "/";
   const basePrefix = base === "/" ? "" : base.replace(/\/$/, "");
-  const normalizedPath =
-    pathname === "/" ? "" : pathname.startsWith("/") ? pathname : `/${pathname}`;
+  const normalizedPath = pathname === "/" ? "" : pathname.startsWith("/") ? pathname : `/${pathname}`;
 
   return `${basePrefix}${normalizedPath || "/"}` || "/";
 }

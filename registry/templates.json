@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-04-17T18:16:19+00:00",
+  "generated_at": "2026-04-18T11:51:46+00:00",
   "source": "scripts/build_registry.py",
-  "template_count": 2,
-  "real_template_count": 1,
+  "template_count": 3,
+  "real_template_count": 2,
   "scaffold_count": 1,
   "templates": [
     {
@@ -88,6 +88,104 @@
           "entry_order": 100,
           "featured_rank": 0,
           "name": "LDV Beamer"
+        }
+      }
+    },
+    {
+      "id": "reports-fit-hcmus",
+      "name": "FIT@HCMUS Report",
+      "slug": "fit-hcmus-report",
+      "kind": "real-template",
+      "maturity": "production",
+      "category": "reports",
+      "subcategory": "report-family",
+      "family": "report-family",
+      "description": "Long-form academic report package tailored for FIT @ VNUHCM University of Science students, with a custom TikZ front page, report-style preamble, and bibliography wiring.",
+      "tags": [
+        "reports",
+        "academic",
+        "hcmus",
+        "vnuhcm",
+        "pdflatex",
+        "bibtex"
+      ],
+      "author": "tranlynhathao",
+      "version": "1.0.0",
+      "engine": "pdflatex",
+      "main_file": "main.tex",
+      "preview_image": "templates/reports/fit@vnuhcmus-custom-template/asset/frontpage.png",
+      "preview_document": "pdf_demo/Report.pdf",
+      "preview_ready": true,
+      "compilation_status": "verified",
+      "listing_visibility": "public",
+      "status": "available",
+      "featured": true,
+      "sort_order": 150,
+      "created_at": "2026-04-18",
+      "updated_at": "2026-04-18",
+      "dependencies": [
+        "latexmk",
+        "pdflatex",
+        "bibtex",
+        "graphicx",
+        "tikz",
+        "hyperref",
+        "fancyhdr",
+        "titlesec",
+        "tocbibind",
+        "natbib",
+        "vntex",
+        "fontawesome"
+      ],
+      "license": "unspecified",
+      "language": "en",
+      "intended_use": "academic report",
+      "notes": [
+        "First real template in the reports category; the report-family scaffold remains the structural reference.",
+        "The front-page image in asset/frontpage.png is used as the catalog thumbnail and was produced by the template author.",
+        "pdf_demo/Report.pdf is an author-provided compiled snapshot; the platform separately verifies main.tex compiles via pdflatex.",
+        "Most report body sections are commented out in main.tex by default so the package compiles as a blank shell ready to be filled in."
+      ],
+      "template_root": "templates/reports/fit@vnuhcmus-custom-template",
+      "metadata_file": "templates/reports/fit@vnuhcmus-custom-template/metadata.json",
+      "readme_file": "templates/reports/fit@vnuhcmus-custom-template/README.md",
+      "resolved_paths": {
+        "main_file": "templates/reports/fit@vnuhcmus-custom-template/main.tex",
+        "preview_image": "templates/reports/fit@vnuhcmus-custom-template/asset/frontpage.png",
+        "preview_document": "templates/reports/fit@vnuhcmus-custom-template/pdf_demo/Report.pdf"
+      },
+      "catalog": {
+        "kind_label": "Real Template",
+        "maturity_label": "Production Ready",
+        "compilation_label": "Compile Verified",
+        "has_preview_image": true,
+        "has_preview_document": true,
+        "preview_status": "ready",
+        "badges": [
+          "Real Template",
+          "Production Ready",
+          "Compile Verified",
+          "Featured",
+          "Preview Ready"
+        ],
+        "detail_route": "/templates/fit-hcmus-report",
+        "category_route": "/categories/reports",
+        "filters": {
+          "category": "reports",
+          "engine": "pdflatex",
+          "kind": "real-template",
+          "maturity": "production",
+          "featured": true,
+          "preview_ready": true,
+          "compilation_status": "verified",
+          "family": "report-family"
+        },
+        "search_text": "fit@hcmus report long-form academic report package tailored for fit @ vnuhcm university of science students, with a custom tikz front page, report-style preamble, and bibliography wiring. reports report-family report-family pdflatex reports academic hcmus vnuhcm pdflatex bibtex",
+        "sort": {
+          "category_order": 200,
+          "entry_order": 150,
+          "featured_rank": 0,
+          "name": "FIT@HCMUS Report"
         }
       }
     },

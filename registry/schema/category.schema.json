@@ -1,72 +1,59 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.local/latex-template-platform/category.schema.json",
-  "title": "Template Category Metadata",
-  "type": "object",
-  "additionalProperties": true,
-  "required": [
-    "id",
-    "slug",
-    "name",
-    "description",
-    "category_state",
-    "listing_visibility",
-    "sort_order",
-    "shared_family",
-    "bootstrap_source",
-    "notes"
-  ],
-  "properties": {
-    "id": {
-      "type": "string",
-      "pattern": "^[a-z0-9-]+$"
-    },
-    "slug": {
-      "type": "string",
-      "pattern": "^[a-z0-9-]+$"
-    },
-    "name": {
-      "type": "string"
-    },
-    "description": {
-      "type": "string"
-    },
-    "category_state": {
-      "type": "string",
-      "enum": [
-        "real-templates-present",
-        "scaffold-backed",
-        "empty-placeholder"
-      ]
-    },
-    "listing_visibility": {
-      "type": "string",
-      "enum": [
-        "public",
-        "hidden"
-      ]
-    },
-    "sort_order": {
-      "type": "integer",
-      "minimum": 0
-    },
-    "shared_family": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "bootstrap_source": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "notes": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    }
-  }
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://example.local/latex-template-platform/category.schema.json",
+	"title": "Template Category Metadata",
+	"type": "object",
+	"additionalProperties": true,
+	"required": [
+		"id",
+		"slug",
+		"name",
+		"description",
+		"category_state",
+		"listing_visibility",
+		"sort_order",
+		"shared_family",
+		"bootstrap_source",
+		"notes"
+	],
+	"properties": {
+		"id": {
+			"type": "string",
+			"pattern": "^[a-z0-9-]+$"
+		},
+		"slug": {
+			"type": "string",
+			"pattern": "^[a-z0-9-]+$"
+		},
+		"name": {
+			"type": "string"
+		},
+		"description": {
+			"type": "string"
+		},
+		"category_state": {
+			"type": "string",
+			"enum": ["real-templates-present", "scaffold-backed", "empty-placeholder"]
+		},
+		"listing_visibility": {
+			"type": "string",
+			"enum": ["public", "hidden"]
+		},
+		"sort_order": {
+			"type": "integer",
+			"minimum": 0
+		},
+		"shared_family": {
+			"type": ["string", "null"]
+		},
+		"bootstrap_source": {
+			"type": ["string", "null"]
+		},
+		"notes": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		}
+	}
 }

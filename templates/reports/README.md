@@ -1,18 +1,16 @@
 # Reports
 
-Category state: `scaffold-backed`
+Category state: `real-templates-present`
 
 This category is the entry point for report-family templates.
 
 ## Current State
 
-- No finished report template is present yet.
-- [`_scaffold/`](./_scaffold/) provides the reference architecture for future reports, articles, books, theses, dissertations, and lecture notes.
+- [`fit@vnuhcmus-custom-template/`](./fit@vnuhcmus-custom-template/) is a concrete real report template (pdfLaTeX) aimed at VNUHCM University of Science students.
+- [`_scaffold/`](./_scaffold/) remains the reference architecture for future reports, articles, books, theses, dissertations, and lecture notes.
 
 ## Repository Semantics
 
-- The category itself is real and intentionally present.
-- The scaffold is cataloged as a scaffold, not as a production-ready report template.
-- A future real report template should live beside `_scaffold/` and change the category from scaffold-backed to real-templates-present.
-
-When a real report-family template is added later, it should live beside `_scaffold/` as its own package directory.
+- Real report templates live beside `_scaffold/` as their own package directories.
+- `_scaffold/` stays cataloged as a scaffold, not as a production report.
+- New report-family templates should derive their directory layout from `_scaffold/` rather than reinventing one.

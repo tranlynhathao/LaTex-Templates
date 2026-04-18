@@ -51,12 +51,7 @@ async function readImageDimensions(filePath) {
         if (marker === 0xd8 || marker === 0xd9) break;
         if (marker === 0x01 || (marker >= 0xd0 && marker <= 0xd7)) continue;
         const segLen = buf.readUInt16BE(i);
-        const isSof =
-          marker >= 0xc0 &&
-          marker <= 0xcf &&
-          marker !== 0xc4 &&
-          marker !== 0xc8 &&
-          marker !== 0xcc;
+        const isSof = marker >= 0xc0 && marker <= 0xcf && marker !== 0xc4 && marker !== 0xc8 && marker !== 0xcc;
         if (isSof) {
           const height = buf.readUInt16BE(i + 3);
           const width = buf.readUInt16BE(i + 5);
@@ -92,7 +87,10 @@ function assetUrl(...segments) {
 
 function runCommand(command, args, { cwd } = {}) {
   return new Promise((resolve) => {
-    const child = spawn(command, args, { cwd, stdio: ["ignore", "ignore", "pipe"] });
+    const child = spawn(command, args, {
+      cwd,
+      stdio: ["ignore", "ignore", "pipe"],
+    });
     let stderr = "";
     child.stderr.on("data", (chunk) => {
       stderr += chunk.toString();
@@ -176,20 +174,10 @@ async function syncEntryAssets(entry, gaps) {
   if (entry.preview_image) {
     const sourcePath = path.join(repoRoot, entry.preview_image);
     const extension = path.extname(entry.preview_image) || ".png";
-    const destinationPath = path.join(
-      siteAssetsDir,
-      "previews",
-      "images",
-      `${entry.slug}${extension}`
-    );
+    const destinationPath = path.join(siteAssetsDir, "previews", "images", `${entry.slug}${extension}`);
 
     if (await copyIfPresent(sourcePath, destinationPath)) {
-      assets.preview_image_url = assetUrl(
-        "site-assets",
-        "previews",
-        "images",
-        `${entry.slug}${extension}`
-      );
+      assets.preview_image_url = assetUrl("site-assets", "previews", "images", `${entry.slug}${extension}`);
       assets.preview_image_source = "declared";
       previewImagePath = destinationPath;
     }
@@ -201,20 +189,10 @@ async function syncEntryAssets(entry, gaps) {
   if (previewDocumentPath) {
     const sourcePath = path.join(repoRoot, previewDocumentPath);
     const extension = path.extname(previewDocumentPath) || ".pdf";
-    const destinationPath = path.join(
-      siteAssetsDir,
-      "previews",
-      "documents",
-      `${entry.slug}${extension}`
-    );
+    const destinationPath = path.join(siteAssetsDir, "previews", "documents", `${entry.slug}${extension}`);
 
     if (await copyIfPresent(sourcePath, destinationPath)) {
-      assets.preview_document_url = assetUrl(
-        "site-assets",
-        "previews",
-        "documents",
-        `${entry.slug}${extension}`
-      );
+      assets.preview_document_url = assetUrl("site-assets", "previews", "documents", `${entry.slug}${extension}`);
       localPdfPath = sourcePath;
     }
   }
@@ -225,12 +203,7 @@ async function syncEntryAssets(entry, gaps) {
     const imagesDir = path.join(siteAssetsDir, "previews", "images");
     const generated = await renderPdfPreview(localPdfPath, imagesDir, entry.slug);
     if (generated) {
-      assets.preview_image_url = assetUrl(
-        "site-assets",
-        "previews",
-        "images",
-        `${entry.slug}.jpg`
-      );
+      assets.preview_image_url = assetUrl("site-assets", "previews", "images", `${entry.slug}.jpg`);
       assets.preview_image_source = "auto-pdf";
       previewImagePath = generated;
     } else {
@@ -256,18 +229,10 @@ async function syncEntryAssets(entry, gaps) {
 
   // 4. Optional prebuilt download archive.
   const archivePath = path.join(repoRoot, "assets", "downloads", `${entry.slug}.zip`);
-  const archiveDestination = path.join(
-    siteAssetsDir,
-    "downloads",
-    `${entry.slug}.zip`
-  );
+  const archiveDestination = path.join(siteAssetsDir, "downloads", `${entry.slug}.zip`);
 
   if (await copyIfPresent(archivePath, archiveDestination)) {
-    assets.download_archive_url = assetUrl(
-      "site-assets",
-      "downloads",
-      `${entry.slug}.zip`
-    );
+    assets.download_archive_url = assetUrl("site-assets", "downloads", `${entry.slug}.zip`);
   }
 
   return assets;
@@ -282,9 +247,7 @@ async function main() {
 
   const categoryMap = new Map(catalog.categories.map((category) => [category.id, category]));
   const gaps = [];
-  const assetEntries = await Promise.all(
-    templates.templates.map((entry) => syncEntryAssets(entry, gaps))
-  );
+  const assetEntries = await Promise.all(templates.templates.map((entry) => syncEntryAssets(entry, gaps)));
   const assetMap = new Map(assetEntries.map((entry) => [entry.id, entry]));
 
   const entries = templates.templates.map((entry) => ({
@@ -314,7 +277,7 @@ async function main() {
   const imagesGenerated = assetEntries.filter((a) => a.preview_image_source === "auto-pdf").length;
   const imagesDeclared = assetEntries.filter((a) => a.preview_image_source === "declared").length;
   console.log(
-    `Synced ${entries.length} registry entries. Preview images: ${imagesDeclared} declared, ${imagesGenerated} auto-rendered from PDF, ${gaps.length} gaps.`
+    `Synced ${entries.length} registry entries. Preview images: ${imagesDeclared} declared, ${imagesGenerated} auto-rendered from PDF, ${gaps.length} gaps.`,
   );
   if (gaps.length) {
     for (const gap of gaps) {

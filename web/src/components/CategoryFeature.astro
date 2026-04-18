@@ -1,0 +1,52 @@
+---
+import { getEntriesByCategory } from "../lib/catalog";
+import { getCategoryStateLabel, withBase } from "../lib/site";
+
+const { category } = Astro.props;
+const entries = getEntriesByCategory(category.id);
+const previewEntries = entries.slice(0, 3);
+const overflow = Math.max(0, entries.length - previewEntries.length);
+const total = category.entry_counts?.total || 0;
+const countLabel = `${total} ${total === 1 ? "entry" : "entries"}`;
+const stateLabel = getCategoryStateLabel(category.category_state);
+---
+
+<article class="category-feature" data-state={category.category_state}>
+  <a class="category-feature-link" href={withBase(`/categories/${category.slug}`)} aria-label={`Open ${category.name} category`}></a>
+  <header class="category-feature-head">
+    <span class="category-feature-state">
+      <span class="dot" aria-hidden="true"></span>
+      {stateLabel}
+    </span>
+    <span class="category-feature-count">{countLabel}</span>
+  </header>
+  <h2 class="category-feature-title">{category.name}</h2>
+  <p class="category-feature-copy">{category.description}</p>
+
+  {previewEntries.length > 0 && (
+    <ul class="category-feature-entries" aria-label="Entries in this category">
+      {previewEntries.map((entry) => (
+        <li data-kind={entry.kind}>
+          <span class="entry-dot" aria-hidden="true"></span>
+          <span class="entry-name">{entry.name}</span>
+          {entry.featured && <span class="entry-tag">Pinned</span>}
+        </li>
+      ))}
+      {overflow > 0 && (
+        <li class="category-feature-overflow">
+          <span class="entry-dot entry-dot-empty" aria-hidden="true"></span>
+          <span class="entry-name">+{overflow} more</span>
+        </li>
+      )}
+    </ul>
+  )}
+
+  <footer class="category-feature-foot">
+    {category.shared_family ? (
+      <span class="category-feature-family">Family · {category.shared_family}</span>
+    ) : (
+      <span class="category-feature-family">&nbsp;</span>
+    )}
+    <span class="category-feature-arrow" aria-hidden="true">→</span>
+  </footer>
+</article>

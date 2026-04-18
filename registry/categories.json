@@ -19,13 +19,13 @@
       "slug": "reports",
       "name": "Reports",
       "description": "Report-style templates and the report-family scaffold.",
-      "category_state": "scaffold-backed",
+      "category_state": "real-templates-present",
       "listing_visibility": "public",
       "sort_order": 200,
       "shared_family": "report-family",
       "bootstrap_source": "templates/reports/_scaffold",
       "notes": [
-        "The category is intentionally scaffold-backed and does not yet contain a real report template."
+        "Contains at least one real report template alongside the report-family scaffold."
       ]
     },
     {

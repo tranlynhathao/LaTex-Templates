@@ -1,39 +1,75 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import CategoryListRow from "../../components/CategoryListRow.astro";
+import CategoryFeature from "../../components/CategoryFeature.astro";
 import CategoryCard from "../../components/CategoryCard.astro";
+import CategoryChip from "../../components/CategoryChip.astro";
 import { getCategories } from "../../lib/catalog";
 
 const categories = getCategories();
-const populated = categories.filter((c) => (c.entry_counts?.total || 0) > 0);
-const placeholders = categories.filter((c) => c.category_state === "empty-placeholder");
+const populated = categories.filter((c) => c.category_state === "real-templates-present");
+const scaffoldBacked = categories.filter((c) => c.category_state === "scaffold-backed");
+const planned = categories.filter((c) => c.category_state === "empty-placeholder");
 ---
 
 <BaseLayout
   title="Categories"
-  description="The full taxonomy of the LaTeX template platform — populated categories and planned placeholders."
+  description="Taxonomy of the LaTeX template gallery — populated, scaffold-backed, and planned categories."
 >
-  <section class="section-tight" style="padding-top:3.5rem;">
+  <section class="taxonomy-hero">
     <div class="container">
       <p class="eyebrow">Taxonomy</p>
-      <h1 style="margin-top:0.75rem;margin-bottom:0.75rem;max-width:18ch;">
-        Categories.
-      </h1>
-      <p class="ink-subtle mono">
-        {populated.length} populated · {placeholders.length} planned
-      </p>
+      <h1 class="taxonomy-title">Catalog structure.</h1>
+      <dl class="taxonomy-summary" aria-label="Category totals by state">
+        <div class="taxonomy-summary-cell" data-state="real-templates-present">
+          <dt>
+            <span class="dot" aria-hidden="true"></span>
+            Populated
+          </dt>
+          <dd>{populated.length}</dd>
+        </div>
+        <div class="taxonomy-summary-cell" data-state="scaffold-backed">
+          <dt>
+            <span class="dot" aria-hidden="true"></span>
+            Scaffold-backed
+          </dt>
+          <dd>{scaffoldBacked.length}</dd>
+        </div>
+        <div class="taxonomy-summary-cell" data-state="empty-placeholder">
+          <dt>
+            <span class="dot" aria-hidden="true"></span>
+            Planned
+          </dt>
+          <dd>{planned.length}</dd>
+        </div>
+      </dl>
     </div>
   </section>
 
   {populated.length > 0 && (
-    <section class="section" style="padding-top:1.5rem;">
+    <section class="taxonomy-section">
       <div class="container">
-        <div class="section-header">
+        <div class="taxonomy-section-head">
           <p class="eyebrow">Populated</p>
-          <span class="ink-muted">{populated.length}</span>
+          <span class="taxonomy-section-count">{populated.length}</span>
+        </div>
+        <div class="category-feature-grid">
+          {populated.map((category) => (
+            <CategoryFeature category={category} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {scaffoldBacked.length > 0 && (
+    <section class="taxonomy-section">
+      <div class="container">
+        <div class="taxonomy-section-head">
+          <p class="eyebrow">Scaffold-backed</p>
+          <span class="taxonomy-section-count">{scaffoldBacked.length}</span>
         </div>
         <div class="card-grid">
-          {populated.map((category, i) => (
+          {scaffoldBacked.map((category, i) => (
             <CategoryCard category={category} index={i} />
           ))}
         </div>
@@ -41,17 +77,19 @@ const placeholders = categories.filter((c) => c.category_state === "empty-placeh
     </section>
   )}
 
-  <section class="section section-inset">
-    <div class="container">
-      <div class="section-header">
-        <p class="eyebrow">All</p>
-        <span class="ink-muted">{categories.length}</span>
+  {planned.length > 0 && (
+    <section class="taxonomy-section taxonomy-section-quiet">
+      <div class="container">
+        <div class="taxonomy-section-head">
+          <p class="eyebrow">Planned</p>
+          <span class="taxonomy-section-count">{planned.length}</span>
+        </div>
+        <div class="category-chip-grid">
+          {planned.map((category) => (
+            <CategoryChip category={category} />
+          ))}
+        </div>
       </div>
-      <div class="category-list">
-        {categories.map((category, i) => (
-          <CategoryListRow category={category} index={i} />
-        ))}
-      </div>
-    </div>
-  </section>
+    </section>
+  )}
 </BaseLayout>

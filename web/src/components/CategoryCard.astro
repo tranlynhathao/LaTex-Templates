@@ -4,8 +4,7 @@ import { getCategoryStateLabel, withBase } from "../lib/site";
 const { category, index } = Astro.props;
 const count = category.entry_counts?.total || 0;
 const countLabel = count === 0 ? "Empty" : `${count} ${count === 1 ? "entry" : "entries"}`;
-const indexLabel =
-  typeof index === "number" ? String(index + 1).padStart(2, "0") : null;
+const indexLabel = typeof index === "number" ? String(index + 1).padStart(2, "0") : null;
 ---
 
 <article class="category-card" data-state={category.category_state}>

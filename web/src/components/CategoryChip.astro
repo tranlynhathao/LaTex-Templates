@@ -1,0 +1,13 @@
+---
+import { withBase } from "../lib/site";
+
+const { category } = Astro.props;
+---
+
+<a class="category-chip" href={withBase(`/categories/${category.slug}`)} data-state={category.category_state}>
+  <span class="category-chip-dot" aria-hidden="true"></span>
+  <span class="category-chip-name">{category.name}</span>
+  {category.shared_family && (
+    <span class="category-chip-family">{category.shared_family}</span>
+  )}
+</a>

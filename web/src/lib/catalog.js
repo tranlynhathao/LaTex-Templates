@@ -16,9 +16,7 @@ function sortEntries(left, right) {
   );
 }
 
-const entries = [...siteData.entries]
-  .filter((entry) => entry.listing_visibility === "public")
-  .sort(sortEntries);
+const entries = [...siteData.entries].filter((entry) => entry.listing_visibility === "public").sort(sortEntries);
 const categories = [...siteData.categories]
   .filter((category) => category.listing_visibility === "public")
   .sort(sortCategories);
@@ -74,8 +72,7 @@ export function getRelatedEntries(entry, limit = 3) {
       }
 
       return (
-        candidate.category === entry.category ||
-        (entry.family && candidate.family && candidate.family === entry.family)
+        candidate.category === entry.category || (entry.family && candidate.family && candidate.family === entry.family)
       );
     })
     .slice(0, limit);

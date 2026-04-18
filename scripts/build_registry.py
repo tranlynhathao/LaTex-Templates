@@ -12,10 +12,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY_DIR = ROOT / "registry"
 TEMPLATES_DIR = ROOT / "templates"
-CATEGORY_KIND_LABELS = {
-    "real-template": "Real Template",
-    "scaffold": "Scaffold",
-}
+CATEGORY_KIND_LABELS = {"real-template": "Real Template", "scaffold": "Scaffold"}
 MATURITY_LABELS = {
     "production": "Production Ready",
     "reference": "Reference Scaffold",
@@ -57,10 +54,7 @@ def build_badges(metadata: dict[str, Any]) -> list[str]:
 
 
 def derive_entry_fields(
-    metadata: dict[str, Any],
-    category_map: dict[str, dict[str, Any]],
-    template_root: Path,
-    metadata_file: Path,
+    metadata: dict[str, Any], category_map: dict[str, dict[str, Any]], template_root: Path, metadata_file: Path
 ) -> dict[str, Any]:
     category = category_map[metadata["category"]]
     readme_file = template_root / "README.md"
@@ -153,10 +147,7 @@ def build_templates_payload(categories: list[dict[str, Any]], templates: list[di
     }
 
 
-def build_category_summary(
-    category: dict[str, Any],
-    templates: list[dict[str, Any]],
-) -> dict[str, Any]:
+def build_category_summary(category: dict[str, Any], templates: list[dict[str, Any]]) -> dict[str, Any]:
     category_entries = [item for item in templates if item["category"] == category["id"]]
     real_templates = [item for item in category_entries if item["kind"] == "real-template"]
     scaffolds = [item for item in category_entries if item["kind"] == "scaffold"]
@@ -208,12 +199,7 @@ def build_catalog_payload(categories: list[dict[str, Any]], templates: list[dict
             "maturities": sorted({item["maturity"] for item in public_entries}),
             "compilation_statuses": sorted({item["compilation_status"] for item in public_entries}),
         },
-        "routes": {
-            "home": "/",
-            "templates": "/templates",
-            "featured": "/featured",
-            "search": "/search",
-        },
+        "routes": {"home": "/", "templates": "/templates", "featured": "/featured", "search": "/search"},
     }
 
 
@@ -227,14 +213,8 @@ def main() -> None:
     templates_payload, catalog_payload = build_registry_payloads()
     templates_path = REGISTRY_DIR / "templates.json"
     catalog_path = REGISTRY_DIR / "catalog.json"
-    templates_path.write_text(
-        json.dumps(templates_payload, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
-    catalog_path.write_text(
-        json.dumps(catalog_payload, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
+    templates_path.write_text(json.dumps(templates_payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    catalog_path.write_text(json.dumps(catalog_payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"Wrote {relative_path(templates_path)} with {templates_payload['template_count']} entries.")
     print(f"Wrote {relative_path(catalog_path)}.")
 

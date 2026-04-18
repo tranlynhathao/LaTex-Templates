@@ -109,14 +109,10 @@ def validate_metadata_files() -> list[str]:
             issues.append(f"{rel_metadata}: invalid status '{data['status']}'")
 
         if data["compilation_status"] not in {"verified", "not-checked", "failing"}:
-            issues.append(
-                f"{rel_metadata}: invalid compilation_status '{data['compilation_status']}'"
-            )
+            issues.append(f"{rel_metadata}: invalid compilation_status '{data['compilation_status']}'")
 
         if data["listing_visibility"] not in {"public", "hidden"}:
-            issues.append(
-                f"{rel_metadata}: invalid listing_visibility '{data['listing_visibility']}'"
-            )
+            issues.append(f"{rel_metadata}: invalid listing_visibility '{data['listing_visibility']}'")
 
         if not isinstance(data["tags"], list):
             issues.append(f"{rel_metadata}: tags must be an array")
@@ -144,9 +140,7 @@ def validate_metadata_files() -> list[str]:
         if preview_document:
             preview_document_path = template_root / preview_document
             if not preview_document_path.exists():
-                issues.append(
-                    f"{rel_metadata}: preview_document does not exist -> {preview_document}"
-                )
+                issues.append(f"{rel_metadata}: preview_document does not exist -> {preview_document}")
 
         preview_image = data.get("preview_image")
         if preview_image:
@@ -154,9 +148,7 @@ def validate_metadata_files() -> list[str]:
             if not preview_image_path.exists():
                 issues.append(f"{rel_metadata}: preview_image does not exist -> {preview_image}")
             if not data["preview_ready"]:
-                issues.append(
-                    f"{rel_metadata}: preview_image is set but preview_ready is false"
-                )
+                issues.append(f"{rel_metadata}: preview_image is set but preview_ready is false")
         elif data["preview_ready"]:
             issues.append(f"{rel_metadata}: preview_ready is true but preview_image is null")
 
@@ -196,25 +188,15 @@ def validate_categories() -> list[str]:
             issues.append(f"registry/categories.json: duplicate category slug '{category['slug']}'")
         seen_slugs.add(category["slug"])
 
-        if category["category_state"] not in {
-            "real-templates-present",
-            "scaffold-backed",
-            "empty-placeholder",
-        }:
-            issues.append(
-                f"registry/categories.json: invalid category_state '{category['category_state']}'"
-            )
+        if category["category_state"] not in {"real-templates-present", "scaffold-backed", "empty-placeholder"}:
+            issues.append(f"registry/categories.json: invalid category_state '{category['category_state']}'")
 
         if category["listing_visibility"] not in {"public", "hidden"}:
-            issues.append(
-                f"registry/categories.json: invalid listing_visibility '{category['listing_visibility']}'"
-            )
+            issues.append(f"registry/categories.json: invalid listing_visibility '{category['listing_visibility']}'")
 
         category_dir = ROOT / "templates" / category["slug"]
         if not category_dir.exists():
-            issues.append(
-                f"registry/categories.json: category directory missing -> templates/{category['slug']}"
-            )
+            issues.append(f"registry/categories.json: category directory missing -> templates/{category['slug']}")
         elif not (category_dir / "README.md").exists():
             issues.append(
                 f"registry/categories.json: category README missing -> templates/{category['slug']}/README.md"
@@ -222,9 +204,7 @@ def validate_categories() -> list[str]:
 
         bootstrap_source = category.get("bootstrap_source")
         if bootstrap_source and not (ROOT / bootstrap_source).exists():
-            issues.append(
-                f"registry/categories.json: bootstrap_source does not exist -> {bootstrap_source}"
-            )
+            issues.append(f"registry/categories.json: bootstrap_source does not exist -> {bootstrap_source}")
 
         category_map[category["id"]] = category
 
